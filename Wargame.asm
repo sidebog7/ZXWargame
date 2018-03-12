@@ -1,6 +1,12 @@
         org 40000
 
-begin   ld a,colscr
+begin:
+
+randomize:
+        ld bc,(23672)
+        ld (seed),bc
+
+        ld a,colscr
         ld (23693),a
         call 3503
         ld a,colbdr
@@ -158,18 +164,19 @@ get_terrain_tile:
         ld d,50
         call rfn
         pop de
-        cp 7        ; 0-6
-        jp c,trn1
+        cp 6        ; 0-6
+        jp m,trn1
         ld a,0
         ret
 trn1:
-        cp 6        ; 0-5
-        jp c,trn2
+        cp 5        ; 0-5
+        jp m,trn2
+        call 0
         ld a,3
         ret
 trn2:
-        cp 3        ; 0-1
-        jp c,trn3
+        cp 2       ; 0-1
+        jp m,trn3
         ld a,2
 trn3:
         ret
