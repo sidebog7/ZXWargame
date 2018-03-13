@@ -18,9 +18,11 @@ randomize:
 
         call 3503
 
+        call terrain_init
+
         call border
 
-        call terrain_init
+        call troops_init
 
         ret
 
@@ -158,6 +160,10 @@ terrain_row_fin:
         ret
 
 
+troops_init:
+
+
+        ret
 
 
 get_terrain_tile:

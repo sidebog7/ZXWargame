@@ -15,7 +15,23 @@ colscr  EQU 56
 colbdr  EQU 0
 
 map     DEFS 480,0
-troops  DEFS 144,0
+troops  DEFS 176,0
+
+; troops 0-7  Blue
+; troops 8-15 Red
+; troops structure
+; 0 - 2                     - byte
+; 1 - 2                     - byte
+; 2 - troop_data 1          - byte
+; 3 - troop_data 2          - byte
+; 4 - troop_data 3 + rnd*2  - byte
+; 5 - (Rnd*100)*10+10       - word
+; 6 - As 5                  - word
+; 7 - X Position            - byte
+; 8 - Y Position            - byte
+
+troop_data:
+        ; DEFB
 
 trpinit DEFB 148,149,150,150,151,151,152,152
         DEFB 148,149,150,150,151,151,152,152
