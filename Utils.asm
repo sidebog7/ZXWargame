@@ -26,29 +26,22 @@ setxy   ld a,22
         ret
 
 random:
-        push bc
-        ld a, (seed)
-        ld b, a
-
-        rrca ; multiply by 32
-        rrca
-        rrca
-        xor 0x1f
-
-        add a, b
-        sbc a, 255 ; carry
-
-        ld (seed), a
-        pop bc
+        ld hl,(seed)
+        ld a,h
+        and 31
+        ld h,a
+        ld a,(hl)
+        inc hl
+        ld (seed),hl
         ret
 seed:
-        defw 0
+        DEFW 0
 
         ; Returns random number in a
         ; Number will be between 1 and d
 random_fn:
-        call random
         push hl
+        call random
         push bc
         ld l,a
         ld h,0

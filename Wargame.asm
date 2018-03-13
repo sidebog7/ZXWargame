@@ -88,7 +88,7 @@ terrain_next_row:
 
 terrain_fill_row: ; Process row d - row, e - column
         push bc
-        ld e,1
+        ld e,2
         ld b,29
 terrain_fill_cell:
         push de
