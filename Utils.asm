@@ -44,6 +44,8 @@ random:
 seed:
         defw 0
 
+        ; Returns random number in a
+        ; Number will be between 1 and d
 random_fn:
         call random
         push hl

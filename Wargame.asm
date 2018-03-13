@@ -32,7 +32,6 @@ control
         ret
 
 border:
-        push de
         ld a,56
         ld (23695),a
         ld b,16
@@ -64,12 +63,10 @@ border_row_fin:
         ld d,0
         jp border_horizontal
 border_fin:
-        pop de
         ret
 
 
 terrain_init:
-        push de
         ld hl,map
         ld b,16
 terrain_next_left_col:
@@ -87,7 +84,6 @@ terrain_next_row:
         call terrain_fill_row
         inc d
         djnz terrain_next_row
-        pop de
         ret
 
 terrain_fill_row: ; Process row d - row, e - column
@@ -161,8 +157,59 @@ terrain_row_fin:
 
 
 troops_init:
+        ld ix,troops
+        ld c,15
+troop_start_loop:
+        ld hl,troop_data
+        ld b,8
+troop_loop:
+        ld (ix+0),2
+        ld (ix+1),2
+        ld a,(hl)
+        ld (ix+2),a
+        inc hl
+        ld a,(hl)
+        inc hl
+        ld (ix+3),a
+        ld e,(hl)
+        inc hl
+        push de
+        ld d,2
+        call random_fn
+        pop de
+        add a,e
+        ld (ix+4),a
+        ld d,100
+        call random_fn
+        push hl
+        ld h,0
+        ld l,a
+        ld d,0
+        ld e,a
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        add hl,de
+        add hl,de
+        ld e,10
+        add hl,de
+        ld (ix+5),h
+        ld (ix+6),l
+        ld (ix+7),h
+        ld (ix+8),l
+        ld (ix+9),c
+        pop hl
+        ld d,0
+        ld e,10
+        add ix,de
+        djnz troop_loop
 
-
+        ld a,c
+        sub 14
+        ld c,a
+        cp 1
+        jp z,troop_start_loop
+        
         ret
 
 

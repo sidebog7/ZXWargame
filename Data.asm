@@ -31,7 +31,14 @@ troops  DEFS 176,0
 ; 8 - Y Position            - byte
 
 troop_data:
-        ; DEFB
+        DEFB 5,4,3
+        DEFB 5,3,3
+        DEFB 4,3,2
+        DEFB 3,3,1
+        DEFB 2,2,1
+        DEFB 2,3,2
+        DEFB 3,2,0
+        DEFB 3,1,0
 
 trpinit DEFB 148,149,150,150,151,151,152,152
         DEFB 148,149,150,150,151,151,152,152
