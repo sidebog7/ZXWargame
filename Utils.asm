@@ -41,13 +41,28 @@ random:
         ld (seed), a
         pop bc
         ret
-seed    defw 192
+seed:
+        defw 0
 
-rfn:
+random_fn:
         call random
-        dec d
-        and d
-        inc a
+        push hl
+        push bc
+        ld l,a
+        ld h,0
+        ld b,0
+        ld c,d
+        dec c
+mod_loop:
+        or a
+        sbc hl,bc
+        jp p,mod_loop
+        add hl,bc
+        ld bc,1
+        add hl,bc
+        ld a,l
+        pop bc
+        pop hl
         ret
 
 Multiply:   ; this routine performs the operation HL=D*E
