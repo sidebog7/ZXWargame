@@ -95,7 +95,7 @@ terrain_fill_row: ; Process row d - row, e - column
 terrain_fill_cell:
         push de
         ld d,10
-        call rfn
+        call random_fn
         pop de
 
         cp 8
@@ -122,13 +122,14 @@ terrain_output:
 
         ld a,(hl)
         cp 0
-        jp z,terrain_output_2
+        jp z,terrain_row_fin
         cp 3
         jp z,terrain_output_2
         call setxy
         ld a,143
         add a,(hl)
         rst 16
+        jp terrain_row_fin
 
 terrain_output_2:
 
@@ -137,7 +138,7 @@ terrain_output_2:
         jp nz,terrain_row_fin
         ld a,e
         cp 30
-        jp nz,terrain_row_fin
+        jp z,terrain_row_fin
         call setxy
         ld a,146
         rst 16
@@ -162,20 +163,20 @@ terrain_row_fin:
 get_terrain_tile:
         push de
         ld d,50
-        call rfn
+        call random_fn
         pop de
-        cp 6        ; 0-6
+
+        cp 6        ; 1-6
         jp m,trn1
         ld a,0
         ret
 trn1:
-        cp 5        ; 0-5
+        cp 5        ; 1-5
         jp m,trn2
-        call 0
         ld a,3
         ret
 trn2:
-        cp 2       ; 0-1
+        cp 2       ; 1-1
         jp m,trn3
         ld a,2
 trn3:
