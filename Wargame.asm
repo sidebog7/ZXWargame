@@ -200,7 +200,7 @@ troop_loop:
         ld (ix+9),c
         pop hl
         ld d,0
-        ld e,10
+        ld e,trooplen
         add ix,de
         djnz troop_loop
 
