@@ -93,7 +93,7 @@ terrain_fill_row: ; Process row d - row, e - column
 terrain_fill_cell:
         push de
         ld d,10
-        call random_fn
+        call random_num_btwn_1_d
         pop de
 
         cp 8
@@ -175,12 +175,12 @@ troop_loop:
         inc hl
         push de
         ld d,2
-        call random_fn
+        call random_num_btwn_1_d
         pop de
         add a,e
         ld (ix+4),a
         ld d,100
-        call random_fn
+        call random_num_btwn_1_d
         push hl
         ld h,0
         ld l,a
@@ -216,7 +216,7 @@ troop_loop:
 get_terrain_tile:
         push de
         ld d,50
-        call random_fn
+        call random_num_btwn_1_d
         pop de
 
         cp 6        ; 1-6

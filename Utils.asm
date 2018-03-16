@@ -39,25 +39,34 @@ seed:
 
         ; Returns random number in a
         ; Number will be between 1 and d
-random_fn:
-        push hl
-        call random
+random_num_btwn_1_d:
+        ld e,1
+        call random_num
+        ret
+
+        ; Returns random number in a
+        ; Number will be between e and d
+random_num:
         push bc
+        push hl
+        ld b,0
+        ld a,d
+        sub e
+        ld c,d
+        call random
         ld l,a
         ld h,0
-        ld b,0
-        ld c,d
-        dec c
 mod_loop:
         or a
         sbc hl,bc
         jp p,mod_loop
         add hl,bc
-        ld bc,1
+        ld b,0
+        ld c,e
         add hl,bc
         ld a,l
-        pop bc
         pop hl
+        pop bc
         ret
 
 Multiply:   ; this routine performs the operation HL=D*E
