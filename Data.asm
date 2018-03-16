@@ -14,21 +14,34 @@ gfxswd  DEFB 1,2,4,8,16,160,64,160
 colscr  EQU 56
 colbdr  EQU 0
 
-map     DEFS 480,0
-troops  DEFS 176,0
+map:
+        DEFS 480,0
+troops:
+        DEFS 176,0
+trooplen EQU 11
+
+troopdata1 EQU 0
+troopdata2 EQU 1
+troopdata3 EQU 2
+troopdata4 EQU 3
+troopdata5 EQU 4
+troopdata6 EQU 5
+troopdata7 EQU 7
+troopdata8 EQU 9
+troopdata9 EQU 10
 
 ; troops 0-7  Blue
 ; troops 8-15 Red
 ; troops structure
-; 0 - 2                     - byte
-; 1 - 2                     - byte
-; 2 - troop_data 1          - byte
-; 3 - troop_data 2          - byte
-; 4 - troop_data 3 + rnd*2  - byte
-; 5 - (Rnd*100)*10+10       - word
-; 6 - As 5                  - word
-; 7 - X Position            - byte
-; 8 - Y Position            - byte
+; 0   - 2                     - byte
+; 1   - 2                     - byte
+; 2   - troop_data 1          - byte
+; 3   - troop_data 2          - byte
+; 4   - troop_data 3 + rnd*2  - byte
+; 5   - (Rnd*100)*10+10       - word
+; 7   - As 5                  - word
+; 9   - X Position            - byte
+; 10  - Y Position            - byte
 
 troop_data:
         DEFB 5,4,3
@@ -40,5 +53,9 @@ troop_data:
         DEFB 3,2,0
         DEFB 3,1,0
 
-trpinit DEFB 148,149,150,150,151,151,152,152
+troop_chars:
         DEFB 148,149,150,150,151,151,152,152
+        DEFB 148,149,150,150,151,151,152,152
+
+debug:
+        DEFW 0
