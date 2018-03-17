@@ -1,3 +1,5 @@
 WG.tap
 wg.txt
 *.tzx
+*.tap
+wgdebug.asm
