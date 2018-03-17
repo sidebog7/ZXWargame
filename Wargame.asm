@@ -2,7 +2,6 @@
 
 begin:
 
-randomize:
         ld bc,(23672)
         ld (seed),bc
 
@@ -23,6 +22,8 @@ randomize:
         call border
 
         call troops_init
+
+        call troops_deploy
 
         ret
 
@@ -209,9 +210,96 @@ troop_loop:
         ld c,a
         cp 1
         jp z,troop_start_loop
-        
+
         ret
 
+
+troops_deploy:
+
+        ld c,0
+        ld b,2
+troops_deploy_loop:
+        ld a,56
+        add a,b
+        ld (23695),a                ; Set ink 1 or 2
+        call troops_output
+        ld a,c
+        add a,8
+        ld c,a
+        djnz troops_deploy_loop
+        ret
+
+troops_output:
+        ld a,c
+        push bc
+        push de
+        ld b,8
+        ld c,a
+        ld d,1
+        ld e,30
+
+troop_choice:
+        push de
+        ld d,7
+        ld e,0
+        call random_num
+        pop de
+        add a,c
+
+        push de
+
+        ld d,trooplen
+        ld e,a
+
+        call Multiply
+
+        ld de,troops
+        add hl,de
+
+        ld d,0
+        ld e,troopdata_xpos
+        add hl,de
+
+        pop de
+
+        ld a,(hl)
+        cp 0
+
+
+        jp nz,troop_choice
+
+
+        push de
+        ld d,4
+        call random_num_btwn_1_d
+        pop de
+
+        add a,d
+        ld d,a
+        push bc
+        ld b,d
+        call divide_d_e
+        ld a,b
+        sub d
+        pop bc
+        ld d,a
+
+        ld (hl),d
+
+        push de
+        ld e,(hl)
+        dec hl
+        ld d,(hl)
+        call setxy
+        ld a,65
+        rst 16
+        pop de
+
+        djnz troop_choice
+
+        pop de
+        pop bc
+        ret
 
 get_terrain_tile:
         push de

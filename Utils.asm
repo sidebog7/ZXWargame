@@ -41,12 +41,14 @@ seed:
         ; Number will be between 1 and d
 random_num_btwn_1_d:
         ld e,1
+        dec d
         call random_num
         ret
 
         ; Returns random number in a
         ; Number will be between e and d
 random_num:
+        inc d
         push bc
         push hl
         ld b,0
@@ -70,6 +72,7 @@ mod_loop:
         ret
 
 Multiply:   ; this routine performs the operation HL=D*E
+        push bc
         ld hl,0                        ; HL is used to accumulate the result
         ld a,d                         ; checking one of the factors; returning if it is zero
         or a
@@ -79,4 +82,22 @@ Multiply:   ; this routine performs the operation HL=D*E
 MulLoop:                         ; adding DE to HL exactly B times
         add hl,de
         djnz MulLoop
+        pop bc
+        ret
+
+divide_d_e:   ; this routine performs the operation D=D/E rem A
+        push bc
+        xor	a
+        ld	b, 8
+
+divide_loop:
+        sla	d
+        rla
+        cp	e
+        jr	c, $+4
+        sub	e
+        inc	d
+
+        djnz	divide_loop
+        pop bc
         ret
