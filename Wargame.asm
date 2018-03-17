@@ -25,10 +25,30 @@ begin:
 
         call troops_deploy
 
+        call clear_textarea
         ret
 
 control
 
+clear_textarea:
+        ld a,56
+        ld (23695),a
+        ld b,5
+clear_loop1:
+        ld a,b
+        add a,16
+        ld d,a
+        push bc
+        ld e,0
+        ld b,32
+clear_loop2:
+        call setxy
+        ld a,32
+        rst 16
+        inc e
+        djnz clear_loop2
+        pop bc
+        djnz clear_loop1
 
         ret
 
