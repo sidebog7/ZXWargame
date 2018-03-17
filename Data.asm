@@ -33,13 +33,13 @@ troopdata_xpos EQU 10
 ; troops 0-7  Blue
 ; troops 8-15 Red
 ; troops structure
-; 0   - 2                     - byte
-; 1   - 2                     - byte
-; 2   - troop_data 1          - byte
-; 3   - troop_data 2          - byte
-; 4   - troop_data 3 + rnd*2  - byte
-; 5   - (Rnd*100)*10+10       - word
-; 7   - As 5                  - word
+; 0   - current order         - byte
+; 1   - current direction     - byte
+; 2   - weaponry              - byte
+; 3   - armour                - byte
+; 4   - morale                - byte
+; 5   - initial strength      - word
+; 7   - current strength      - word
 ; 9   - X Position            - byte
 ; 10  - Y Position            - byte
 
@@ -55,6 +55,68 @@ troop_data:
 
 troop_chars:
         DEFB 148,149,150,150,151,151,152,152
+
+text_order_fire:
+        DEFB "fire"
+text_order_halt:
+        DEFB "halt"
+text_order_move:
+        DEFB "move"
+text_order_status:
+        DEFB "status"
+text_order_rout:
+        DEFB "rout"
+
+text_weapon_none:
+        DEFB "none"
+text_weapon_bow:
+        DEFB "bow"
+text_weapon_sword:
+        DEFB "sword"
+text_weapon_axe:
+        DEFB "axe"
+text_weapon_lance:
+        DEFB "lance"
+
+text_morale_cowardly:
+        DEFB "cowardly"
+text_morale_unwilling:
+        DEFB "unwilling"
+text_morale_willing:
+        DEFB "willing"
+text_morale_brave:
+        DEFB "brave"
+text_morale_valiant:
+        DEFB "valiant"
+
+text_unit_knights:
+        DEFB "knights"
+text_unit_sergeants:
+        DEFB "sergeants"
+text_unit_menatarms:
+        DEFB "men-at-arms"
+text_unit_archers:
+        DEFB "archers"
+text_unit_peasants:
+        DEFB "peasants"
+
+text_armour_none:
+        DEFB "none"
+text_armour_jerkin:
+        DEFB "jerkin"
+text_armour_chainmail:
+        DEFB "chainmail"
+text_armour_plate:
+        DEFB "plate"
+
+text_terrain_plains:
+        DEFB "plains"
+text_terrain_village:
+        DEFB "village"
+text_terrain_woods:
+        DEFB "woods"
+text_terrain_hills:
+        DEFB "hills"
 
 debug:
         DEFW 0
