@@ -27,8 +27,8 @@ troopdata4 EQU 3
 troopdata5 EQU 4
 troopdata6 EQU 5
 troopdata7 EQU 7
-troopdata8 EQU 9
-troopdata9 EQU 10
+troopdata_ypos EQU 9
+troopdata_xpos EQU 10
 
 ; troops 0-7  Blue
 ; troops 8-15 Red

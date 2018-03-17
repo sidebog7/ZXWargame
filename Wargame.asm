@@ -197,7 +197,7 @@ troop_loop:
         ld (ix+6),l
         ld (ix+7),h
         ld (ix+8),l
-        ld (ix+9),c
+        ld (ix+troopdata_ypos),c
         pop hl
         ld d,0
         ld e,trooplen
