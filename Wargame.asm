@@ -223,14 +223,16 @@ troops_deploy_loop:
         add a,b
         ld (23695),a                ; Set ink 1 or 2
         call troops_output
-        ld a,c
-        add a,8
-        ld c,a
+        inc c
         djnz troops_deploy_loop
         ret
 
 troops_output:
+        ld ix,troop_chars
         ld a,c
+        sla a
+        sla a
+        sla a
         push bc
         push de
         ld b,8
@@ -291,10 +293,11 @@ troop_choice:
         dec hl
         ld d,(hl)
         call setxy
-        ld a,65
+        ld a,(ix+0)
         rst 16
         pop de
 
+        inc ix
         djnz troop_choice
 
         pop de
