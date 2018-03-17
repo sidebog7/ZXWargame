@@ -26,6 +26,9 @@ begin:
         call troops_deploy
 
         call clear_textarea
+
+        call press_any_key
+        
         ret
 
 control

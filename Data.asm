@@ -118,5 +118,9 @@ text_terrain_woods:
 text_terrain_hills:
         DEFB "hills"
 
+text_press_any_key:
+        DEFB "(PRESS ANY KEY)"
+        DEFB 0
+
 debug:
         DEFW 0

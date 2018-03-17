@@ -17,6 +17,8 @@ clrnr   djnz clrrep
         pop de
         ret
 
+        ; Sets the x position to e
+        ; Sets the y position to d
 setxy   ld a,22
         rst 16
         ld a,d
@@ -100,4 +102,35 @@ divide_loop:
 
         djnz	divide_loop
         pop bc
+        ret
+
+press_any_key:
+        ld a,56
+        ld (23695),a
+        push de
+        ld d,21
+        ld e,7
+        ld ix,text_press_any_key
+pak_textloop:
+        call setxy
+        ld a,(ix+0)
+        rst 16
+        ld a,(ix+1)
+        cp 0
+        jp z,pak_fin_textloop
+        inc e
+        inc ix
+
+        jp pak_textloop
+pak_fin_textloop:
+        pop de
+
+        push hl
+        ld hl,23560
+        ld (hl),0
+pak_loop:
+        ld a,(hl)
+        cp 0
+        jr z,pak_loop
+        pop hl
         ret
