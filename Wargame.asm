@@ -82,7 +82,7 @@ border_row:
         jp border_row
 border_row_fin:
         ld a,d
-        cp 0
+        or a
         jp z,border_fin
         ld d,0
         jp border_horizontal
@@ -134,7 +134,7 @@ terrain_set_map:
         cp 3
         jp nz,terrain_output  ; a <> 3
         ld a,b
-        cp 1
+        dec a
         jp z,terrain_output   ; col < 30
         inc hl
         ld (hl),4
@@ -143,7 +143,7 @@ terrain_set_map:
 terrain_output:
 
         ld a,(hl)
-        cp 0
+        or a
         jp z,terrain_row_fin
         cp 3
         jp z,terrain_output_2
@@ -231,7 +231,7 @@ troop_loop:
         ld a,c
         sub 14
         ld c,a
-        cp 1
+        dec a
         jp z,troop_start_loop
 
         ret
@@ -288,7 +288,7 @@ troop_choice:
         pop de
 
         ld a,(hl)
-        cp 0
+        or a
 
 
         jp nz,troop_choice
@@ -335,7 +335,7 @@ get_terrain_tile:
 
         cp 6        ; 1-6
         jp m,trn1
-        ld a,0
+        sub a
         ret
 trn1:
         cp 5        ; 1-5

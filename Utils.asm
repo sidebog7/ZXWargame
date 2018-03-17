@@ -116,7 +116,7 @@ pak_textloop:
         ld a,(ix+0)
         rst 16
         ld a,(ix+1)
-        cp 0
+        or a
         jp z,pak_fin_textloop
         inc e
         inc ix
@@ -130,7 +130,7 @@ pak_fin_textloop:
         ld (hl),0
 pak_loop:
         ld a,(hl)
-        cp 0
+        or a
         jr z,pak_loop
         pop hl
         ret
