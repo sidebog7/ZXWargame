@@ -34,6 +34,8 @@ begin:
 control
 
 clear_textarea:
+        push de
+        push bc
         ld a,56
         ld (23695),a
         ld b,5
@@ -49,7 +51,8 @@ clear_loop2:
         djnz clear_loop2
         pop bc
         djnz clear_loop1
-
+        pop bc
+        pop de
         ret
 
 border:
