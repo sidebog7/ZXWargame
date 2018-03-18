@@ -37,18 +37,15 @@ clear_textarea:
         ld a,56
         ld (23695),a
         ld b,5
-clear_loop1:
-        ld a,b
-        add a,16
-        ld d,a
-        push bc
+        ld d,17
         ld e,0
+        call setxy
+clear_loop1:
+        push bc
         ld b,32
 clear_loop2:
-        call setxy
         ld a,32
         rst 16
-        inc e
         djnz clear_loop2
         pop bc
         djnz clear_loop1
@@ -72,18 +69,17 @@ border_edge:
         djnz border_edge
         ld d,16
 border_horizontal:
-        ld e,31
-border_row:
+        ld e,0
         call setxy
+        ld b,32
+border_row:
         ld a,150
         rst 16
-        dec e
-        jp m,border_row_fin
-        jp border_row
+        djnz border_row
 border_row_fin:
         ld a,d
         or a
-        jp z,border_fin
+        jp z,border_fin   ; a = 0
         ld d,0
         jp border_horizontal
 border_fin:
@@ -144,9 +140,9 @@ terrain_output:
 
         ld a,(hl)
         or a
-        jp z,terrain_row_fin
+        jp z,terrain_row_fin  ; a = 0
         cp 3
-        jp z,terrain_output_2
+        jp z,terrain_output_2 ; a = 3
         call setxy
         ld a,143
         add a,(hl)
@@ -164,9 +160,6 @@ terrain_output_2:
         call setxy
         ld a,146
         rst 16
-        inc e
-        call setxy
-        dec e
         ld a,147
         rst 16
 
