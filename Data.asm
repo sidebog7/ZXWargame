@@ -40,8 +40,8 @@ troopdata_xpos EQU 10
 ; 4   - morale                - byte
 ; 5   - initial strength      - word
 ; 7   - current strength      - word
-; 9   - X Position            - byte
-; 10  - Y Position            - byte
+; 9   - Y Position            - byte
+; 10  - X Position            - byte
 
 troop_data:
         DEFB 5,4,3

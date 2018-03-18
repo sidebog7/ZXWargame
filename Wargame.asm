@@ -244,7 +244,6 @@ troops_deploy_loop:
         ret
 
 troops_output:
-        ld ix,troop_chars
         ld a,c
         sla a
         sla a
@@ -261,10 +260,13 @@ troop_choice:
         ld d,7
         ld e,0
         call random_num
-        pop de
+
+        ld d,0
+        ld e,a
         add a,c
 
-        push de
+        ld ix,troop_chars
+        add ix,de
 
         ld d,trooplen
         ld e,a
@@ -283,9 +285,7 @@ troop_choice:
         ld a,(hl)
         or a
 
-
         jp nz,troop_choice
-
 
         push de
         ld d,4
@@ -313,7 +313,6 @@ troop_choice:
         rst 16
         pop de
 
-        inc ix
         djnz troop_choice
 
         pop de
