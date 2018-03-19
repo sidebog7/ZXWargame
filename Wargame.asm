@@ -120,11 +120,27 @@ get_order_no_move:
         call get_y_or_n
 
         cp 1
-        jp z,select_action
+        jp nz,get_order_continue
 
+        call select_action
 
 get_order_continue:
         call press_any_key
+
+        ld a,58
+        ld (23695),a
+
+        ld e,(ix+10)
+        ld d,(ix+9)
+        call setxy
+
+        ld d,0
+        ld e,c
+        ld hl,troop_chars
+        add hl,de
+        ld a,(hl)
+        rst 16
+
         ret
 
 
