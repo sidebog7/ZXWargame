@@ -147,6 +147,33 @@ text_output_b_chars:
         ret
 
 
+get_y_or_n:
+        push bc
+gyon_loop:
+        ld bc,57342
+        in a,(c)
+        and 16
+        cp 16
+        jr nz,press_y
+
+        ld bc,32766
+        in a,(c)
+        and 8
+        cp 8
+        jr nz,press_n
+
+        jp gyon_loop
+press_y:
+        ld a,1
+        jp gyon_fin
+press_n:
+        ld a,2
+
+gyon_fin:
+        pop bc
+        ret
+
+
 fade:
         ld b,7		;maximum of seven colors
 fade0:

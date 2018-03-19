@@ -66,6 +66,9 @@ text_current_orders:
 text_change_orders:
         DEFB "Do you want to change (Y/N)?",0
 
+text_options_are:
+        DEFB "Options are:",0
+
 text_order:
 text_order_fire:
         DEFB "fire",0

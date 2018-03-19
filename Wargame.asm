@@ -117,8 +117,104 @@ get_order_no_move:
       call text_output
       pop ix
 
+      call get_y_or_n
+
+      cp 1
+      jp z,select_action
+
+
+get_order_continue:
       call press_any_key
       ret
+
+
+select_action:
+      call clear_textarea
+
+      ld d,18
+      ld e,0
+      call setxy
+      push ix
+      ld ix,text_options_are
+      call text_output
+      pop ix
+
+      push bc
+
+      ld b,4
+      ld c,0
+select_action_output:
+      ld a,18
+      add a,c
+      ld d,a
+      ld e,8
+      call setxy
+
+      ld a,c
+      call output_order_key
+      ld a,32
+      rst 16
+      ld a,45
+      rst 16
+      ld a,32
+      rst 16
+      ld a,c
+      call output_order_text
+
+      inc c
+      djnz select_action_output
+
+      call get_order_key
+
+      pop bc
+
+      jp get_order_continue
+
+
+get_order_key:
+
+        push bc
+gok_loop:
+        ld bc,65022
+        in a,(c)
+        ld c,a
+        and 8
+        cp 8
+        jr nz,gok_press_f
+        ld a,c
+        and 2
+        cp 2
+        jr nz,gok_press_s
+
+        ld bc,49150
+        in a,(c)
+        and 16
+        cp 16
+        jr nz,gok_press_h
+
+        ld bc,32766
+        in a,(c)
+        and 4
+        cp 4
+        jr nz,gok_press_m
+
+        jp gok_loop
+gok_press_f:
+        ld a,1
+        jp gok_fin
+gok_press_h:
+        ld a,2
+        jp gok_fin
+gok_press_m:
+        ld a,3
+        jp gok_fin
+gok_press_s:
+        ld a,4
+
+gok_fin:
+        pop bc
+
+        ret
 
       ; Outputs the order direction text for
       ; troop stored at ix
@@ -146,10 +242,17 @@ output_order_direction:
       ; Outputs the relevant Order text for
       ; troop stored at ix
       ; Destroys: a, de, hl
-output_order_text:
 
-      ld hl,troop_order_offsets
+output_troop_order_text:
       ld a,(ix+0)
+      call output_order_text
+      ret
+
+      ; Outputs the relevant Order text for
+      ; order a (0-3)
+      ; Destroys: a, de, hl
+output_order_text:
+      ld hl,troop_order_offsets
       sla a
       ld d,0
       ld e,a
@@ -161,6 +264,26 @@ output_order_text:
       ld ix,text_order
       add ix,de
       call text_output
+      pop ix
+      ret
+
+      ; Outputs the relevant Order text for
+      ; order a (0-3)
+      ; Destroys: a, de, hl
+output_order_key:
+      ld hl,troop_order_offsets
+      sla a
+      ld d,0
+      ld e,a
+      add hl,de
+      ld e,(hl)
+      inc hl
+      ld d,(hl)
+      push ix
+      ld ix,text_order
+      add ix,de
+      ld a,(ix+0)
+      rst 16
       pop ix
       ret
 
