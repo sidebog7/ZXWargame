@@ -1,6 +1,7 @@
         org 40000
 
 begin:
+        di
 
         ld bc,(23672)
         ld (seed),bc
@@ -28,10 +29,170 @@ begin:
         call clear_textarea
 
         call press_any_key
-        
+
+        call game_loop_start
+
+        ei
         ret
 
-control
+
+game_loop_start:
+      ld b,8
+      ld c,0
+      ld ix,troops
+game_loop:
+
+      ld a,(ix+0)
+      cp 3
+
+      jp nc,after_order
+      call get_order
+after_order:
+
+
+
+      ld de,trooplen
+      add ix,de
+      inc c
+      djnz game_loop
+      ret
+
+get_order:
+      call clear_textarea
+
+      ld a,56+128
+      ld (23695),a
+
+      ld e,(ix+10)
+      ld d,(ix+9)
+      call setxy
+
+      ld d,0
+      ld e,c
+      ld hl,troop_chars
+      add hl,de
+      ld a,(hl)
+      rst 16
+
+      ld a,56
+      ld (23695),a
+
+      ld d,17
+      ld e,0
+      call setxy
+      push ix
+      ld ix,text_unit_number
+      call text_output
+      pop ix
+      ld a,49
+      add a,c
+      rst 16
+      ld a,32
+      rst 16
+
+      call output_troop_text
+
+      ld d,18
+      ld e,0
+      call setxy
+      push ix
+      ld ix,text_current_orders
+      call text_output
+      pop ix
+
+      call output_order_text
+      ld a,(ix+0)
+      cp 3
+      jp nz,get_order_no_move
+
+      call output_order_direction
+
+get_order_no_move:
+
+      ld d,19
+      ld e,0
+      call setxy
+      push ix
+      ld ix,text_change_orders
+      call text_output
+      pop ix
+
+      call press_any_key
+      ret
+
+      ; Outputs the order direction text for
+      ; troop stored at ix
+      ; Destroys a
+output_order_direction:
+      ld a,32
+      rst 16
+      push bc
+      ld a,(ix+1)
+      ld b,a
+      sla a
+      sla a
+      add a,b
+      push ix
+      ld ix,text_direction
+      ld b,0
+      ld c,a
+      add ix,bc
+      ld b,5
+      call text_output_b_chars
+      pop ix
+      pop bc
+      ret
+
+      ; Outputs the relevant Order text for
+      ; troop stored at ix
+      ; Destroys: a, de, hl
+output_order_text:
+
+      ld hl,troop_order_offsets
+      ld a,(ix+0)
+      sla a
+      ld d,0
+      ld e,a
+      add hl,de
+      ld e,(hl)
+      inc hl
+      ld d,(hl)
+      push ix
+      ld ix,text_order
+      add ix,de
+      call text_output
+      pop ix
+      ret
+
+      ; Outputs the relevant Troop name for
+      ; troop number stored in c
+      ; Destroys: a, de, hl
+output_troop_text:
+      push ix
+      ld ix,text_unit
+      ld hl,troop_type_offsets
+      ld a,c
+      sla a
+      ld d,0
+      ld e,a
+      add hl,de
+      ld e,(hl)
+      inc hl
+      ld d,(hl)
+      add ix,de
+      call text_output
+      pop ix
+      ret
+
+move_unit:
+
+
+        ret
+
+control:
+
+
+        ret
 
 clear_textarea:
         push de
@@ -183,8 +344,8 @@ troop_start_loop:
         ld hl,troop_data
         ld b,8
 troop_loop:
-        ld (ix+0),2
-        ld (ix+1),2
+        ld (ix+0),1
+        ld (ix+1),1
         ld a,(hl)
         ld (ix+2),a
         inc hl

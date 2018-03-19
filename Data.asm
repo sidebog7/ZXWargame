@@ -17,7 +17,10 @@ colbdr  EQU 0
 map:
         DEFS 480,0
 troops:
-        DEFS 176,0
+user_troops:
+        DEFS 88,0
+comp_troops:
+        DEFS 88,0
 trooplen EQU 11
 
 troopdata1 EQU 0
@@ -56,71 +59,120 @@ troop_data:
 troop_chars:
         DEFB 148,149,150,150,151,151,152,152
 
+text_unit_number:
+        DEFB "Unit number ",0
+text_current_orders:
+        DEFB "Current orders are to ",0
+text_change_orders:
+        DEFB "Do you want to change (Y/N)?",0
+
+text_order:
 text_order_fire:
-        DEFB "fire"
+        DEFB "fire",0
 text_order_halt:
-        DEFB "halt"
+        DEFB "halt",0
 text_order_move:
-        DEFB "move"
+        DEFB "move",0
 text_order_status:
-        DEFB "status"
+        DEFB "status",0
 text_order_rout:
-        DEFB "rout"
+        DEFB "rout",0
+
 
 text_weapon_none:
-        DEFB "none"
+        DEFB "none",0
 text_weapon_bow:
-        DEFB "bow"
+        DEFB "bow",0
 text_weapon_sword:
-        DEFB "sword"
+        DEFB "sword",0
 text_weapon_axe:
-        DEFB "axe"
+        DEFB "axe",0
 text_weapon_lance:
-        DEFB "lance"
+        DEFB "lance",0
 
 text_morale_cowardly:
-        DEFB "cowardly"
+        DEFB "cowardly",0
 text_morale_unwilling:
-        DEFB "unwilling"
+        DEFB "unwilling",0
 text_morale_willing:
-        DEFB "willing"
+        DEFB "willing",0
 text_morale_brave:
-        DEFB "brave"
+        DEFB "brave",0
 text_morale_valiant:
-        DEFB "valiant"
+        DEFB "valiant",0
 
+text_unit:
 text_unit_knights:
-        DEFB "knights"
+        DEFB "knights",0
 text_unit_sergeants:
-        DEFB "sergeants"
+        DEFB "sergeants",0
 text_unit_menatarms:
-        DEFB "men-at-arms"
+        DEFB "men-at-arms",0
 text_unit_archers:
-        DEFB "archers"
+        DEFB "archers",0
 text_unit_peasants:
-        DEFB "peasants"
+        DEFB "peasants",0
 
 text_armour_none:
-        DEFB "none"
+        DEFB "none",0
 text_armour_jerkin:
-        DEFB "jerkin"
+        DEFB "jerkin",0
 text_armour_chainmail:
-        DEFB "chainmail"
+        DEFB "chainmail",0
 text_armour_plate:
-        DEFB "plate"
+        DEFB "plate",0
 
 text_terrain_plains:
-        DEFB "plains"
+        DEFB "plains",0
 text_terrain_village:
-        DEFB "village"
+        DEFB "village",0
 text_terrain_woods:
-        DEFB "woods"
+        DEFB "woods",0
 text_terrain_hills:
-        DEFB "hills"
+        DEFB "hills",0
 
-text_press_any_key:
-        DEFB "(PRESS ANY KEY)"
-        DEFB 0
+text_direction:
+text_direction_north:
+        DEFB "north"
+text_direction_west:
+        DEFB "west "
+text_direction_south:
+        DEFB "south"
+text_direction_east:
+        DEFB "east "
+
+text_press_enter:
+        DEFB "(PRESS ENTER)",0
+
+troop_type_offsets:
+troop_type_1:
+        DEFW text_unit_knights-text_unit
+troop_type_2:
+        DEFW text_unit_sergeants-text_unit
+troop_type_3:
+        DEFW text_unit_menatarms-text_unit
+troop_type_4:
+        DEFW text_unit_menatarms-text_unit
+troop_type_5:
+        DEFW text_unit_archers-text_unit
+troop_type_6:
+        DEFW text_unit_archers-text_unit
+troop_type_7:
+        DEFW text_unit_peasants-text_unit
+troop_type_8:
+        DEFW text_unit_peasants-text_unit
+
+troop_order_offsets:
+troop_order_0:
+        DEFW text_order_fire-text_order
+troop_order_1:
+        DEFW text_order_halt-text_order
+troop_order_2:
+        DEFW text_order_move-text_order
+troop_order_3:
+        DEFW text_order_status-text_order
+troop_order_4:
+        DEFW text_order_rout-text_order
 
 debug:
         DEFW 0

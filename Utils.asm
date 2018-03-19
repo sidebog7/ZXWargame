@@ -105,32 +105,79 @@ divide_loop:
         ret
 
 press_any_key:
+        push ix
         ld a,56
         ld (23695),a
         push de
         ld d,21
-        ld e,7
-        ld ix,text_press_any_key
-pak_textloop:
+        ld e,9
+        ld ix,text_press_enter
         call setxy
+        call text_output
+        pop de
+
+        push bc
+        ld bc,49150
+pak_loop:
+        in a,(c)
+        and 1
+        cp 1
+        jr z,pak_loop
+        pop bc
+        pop ix
+        ret
+
+text_output:
         ld a,(ix+0)
         rst 16
         ld a,(ix+1)
         or a
-        jp z,pak_fin_textloop
-        inc e
+        jp z,text_fin_output
         inc ix
 
-        jp pak_textloop
-pak_fin_textloop:
-        pop de
+        jp text_output
+text_fin_output:
+        ret
 
-        push hl
-        ld hl,23560
-        ld (hl),0
-pak_loop:
-        ld a,(hl)
-        or a
-        jr z,pak_loop
-        pop hl
+text_output_b_chars:
+        ld a,(ix+0)
+        rst 16
+        inc ix
+        djnz text_output_b_chars
+        ret
+
+
+fade:
+        ld b,7		;maximum of seven colors
+fade0:
+        ld hl,$5800	;beginning of attr area
+
+        halt		;wait for beginning of frame
+        ld de,$262	;0x262 is minimum for a custom IM2 routine
+fade_wait:
+        dec de		;until we reach active screen area,
+        ld a,d		;plus generous overlap to account for
+        or e		;different timings of different machines
+        jr nz,fade_wait	;before we start drawing behind the beam
+
+fade1:
+        ld a,(hl)	;read attr into A
+        and 7		;isolate INK
+        ld c,a		;copy into C
+        jr z,fade_1		;leave it alone, if 0
+        dec c		;else, decrement INK
+fade_1:
+        ld a,(hl)	;reload A with attr
+        and $38		;isolate PAPER
+        jr z,fade_2		;leave it alone, if 0
+        sub 8		;else, decrement PAPER
+fade_2:
+        or c		;merge with INK
+        ld (hl),a	;write attr
+        inc hl		;next cell
+        ld a,h
+        cp $5b		;past the end of attr area?
+        jr nz,fade1	;repeat if not
+        djnz fade0	;next color down
+
         ret
