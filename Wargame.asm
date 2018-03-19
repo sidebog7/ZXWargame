@@ -37,275 +37,295 @@ begin:
 
 
 game_loop_start:
-      ld b,8
-      ld c,0
-      ld ix,troops
+        ld b,8
+        ld c,0
+        ld ix,troops
 game_loop:
 
-      ld a,(ix+0)
-      cp 3
+        ld a,(ix+0)
+        cp 3
 
-      jp nc,after_order
-      call get_order
+        jp nc,after_order
+        call get_order
 after_order:
 
 
 
-      ld de,trooplen
-      add ix,de
-      inc c
-      djnz game_loop
-      ret
+        ld de,trooplen
+        add ix,de
+        inc c
+        djnz game_loop
+        ret
 
 get_order:
-      call clear_textarea
+        call clear_textarea
 
-      ld a,56+128
-      ld (23695),a
+        ld a,56+128
+        ld (23695),a
 
-      ld e,(ix+10)
-      ld d,(ix+9)
-      call setxy
+        ld e,(ix+10)
+        ld d,(ix+9)
+        call setxy
 
-      ld d,0
-      ld e,c
-      ld hl,troop_chars
-      add hl,de
-      ld a,(hl)
-      rst 16
+        ld d,0
+        ld e,c
+        ld hl,troop_chars
+        add hl,de
+        ld a,(hl)
+        rst 16
 
-      ld a,56
-      ld (23695),a
+        ld a,56
+        ld (23695),a
 
-      ld d,17
-      ld e,0
-      call setxy
-      push ix
-      ld ix,text_unit_number
-      call text_output
-      pop ix
-      ld a,49
-      add a,c
-      rst 16
-      ld a,32
-      rst 16
+        ld d,17
+        ld e,0
+        call setxy
+        push ix
+        ld ix,text_unit_number
+        call text_output
+        pop ix
+        ld a,49
+        add a,c
+        rst 16
+        ld a,32
+        rst 16
 
-      call output_troop_text
+        call output_troop_text
 
-      ld d,18
-      ld e,0
-      call setxy
-      push ix
-      ld ix,text_current_orders
-      call text_output
-      pop ix
+        ld d,18
+        ld e,0
+        call setxy
+        push ix
+        ld ix,text_current_orders
+        call text_output
+        pop ix
 
-      call output_order_text
-      ld a,(ix+0)
-      cp 3
-      jp nz,get_order_no_move
+        call output_order_text
+        ld a,(ix+0)
+        cp 3
+        jp nz,get_order_no_move
 
-      call output_order_direction
+        call output_order_direction
 
 get_order_no_move:
 
-      ld d,19
-      ld e,0
-      call setxy
-      push ix
-      ld ix,text_change_orders
-      call text_output
-      pop ix
+        ld d,19
+        ld e,0
+        call setxy
+        push ix
+        ld ix,text_change_orders
+        call text_output
+        pop ix
 
-      call get_y_or_n
+        call get_y_or_n
 
-      cp 1
-      jp z,select_action
+        cp 1
+        jp z,select_action
 
 
 get_order_continue:
-      call press_any_key
-      ret
+        call press_any_key
+        ret
 
 
 select_action:
-      call clear_textarea
+        call clear_textarea
 
-      ld d,18
-      ld e,0
-      call setxy
-      push ix
-      ld ix,text_options_are
-      call text_output
-      pop ix
+        ld d,18
+        ld e,0
+        call setxy
+        push ix
+        ld ix,text_options_are
+        call text_output
+        pop ix
 
-      push bc
+        ld a,c
 
-      ld b,4
-      ld c,0
+        push bc
+
+        ld b,4
+        ld c,0
+
+        cp 4
+        jp z,select_action_output
+        cp 5
+        jp z,select_action_output
+        inc c
+        dec b
+
 select_action_output:
-      ld a,18
-      add a,c
-      ld d,a
-      ld e,8
-      call setxy
 
-      ld a,c
-      call output_order_key
-      ld a,32
-      rst 16
-      ld a,45
-      rst 16
-      ld a,32
-      rst 16
-      ld a,c
-      call output_order_text
+        ld a,18
+        add a,c
+        ld d,a
+        ld e,14
+        call setxy
 
-      inc c
-      djnz select_action_output
+        ld a,c
+        call output_order_key
+        ld a,32
+        rst 16
+        ld a,45
+        rst 16
+        ld a,32
+        rst 16
+        ld a,c
+        call output_order_text
 
-      call get_order_key
+        inc c
+        djnz select_action_output
 
-      pop bc
+        pop bc
 
-      jp get_order_continue
+        call get_order_key
 
+        jp get_order_continue
 
+        ; Gets the order key f,s,h,m
+        ; Ignores f if not archer (4/5)
 get_order_key:
-
+        push de
+        ld d,c
         push bc
 gok_loop:
         ld bc,65022
-        in a,(c)
-        ld c,a
+        in c,(c)
+
+        ld a,d
+        cp 5
+        jr z,gok_check_f
+        cp 4
+        jr z,gok_check_f
+        jr gok_ignore_f
+
+gok_check_f:
+        ld a,c
         and 8
-        cp 8
-        jr nz,gok_press_f
+        jr z,gok_press_f
+gok_ignore_f:
         ld a,c
         and 2
-        cp 2
-        jr nz,gok_press_s
+        jr z,gok_press_s
 
         ld bc,49150
         in a,(c)
         and 16
-        cp 16
-        jr nz,gok_press_h
+        jr z,gok_press_h
 
         ld bc,32766
         in a,(c)
         and 4
-        cp 4
-        jr nz,gok_press_m
+        jr z,gok_press_m
 
-        jp gok_loop
+        jr gok_loop
 gok_press_f:
         ld a,1
-        jp gok_fin
+        jr gok_fin
 gok_press_h:
         ld a,2
-        jp gok_fin
+        jr gok_fin
 gok_press_m:
         ld a,3
-        jp gok_fin
+        jr gok_fin
 gok_press_s:
         ld a,4
 
 gok_fin:
         pop bc
+        pop de
 
         ret
 
-      ; Outputs the order direction text for
-      ; troop stored at ix
-      ; Destroys a
+        ; Outputs the order direction text for
+        ; troop stored at ix
+        ; Destroys a
 output_order_direction:
-      ld a,32
-      rst 16
-      push bc
-      ld a,(ix+1)
-      ld b,a
-      sla a
-      sla a
-      add a,b
-      push ix
-      ld ix,text_direction
-      ld b,0
-      ld c,a
-      add ix,bc
-      ld b,5
-      call text_output_b_chars
-      pop ix
-      pop bc
-      ret
+        ld a,32
+        rst 16
+        push bc
+        ld a,(ix+1)
+        ld b,a
+        sla a
+        sla a
+        add a,b
+        push ix
+        ld ix,text_direction
+        ld b,0
+        ld c,a
+        add ix,bc
+        ld b,5
+        call text_output_b_chars
+        pop ix
+        pop bc
+        ret
 
-      ; Outputs the relevant Order text for
-      ; troop stored at ix
-      ; Destroys: a, de, hl
+        ; Outputs the relevant Order text for
+        ; troop stored at ix
+        ; Destroys: a, de, hl
 
 output_troop_order_text:
-      ld a,(ix+0)
-      call output_order_text
-      ret
+        ld a,(ix+0)
+        call output_order_text
+        ret
 
-      ; Outputs the relevant Order text for
-      ; order a (0-3)
-      ; Destroys: a, de, hl
+        ; Outputs the relevant Order text for
+        ; order a (0-3)
+        ; Destroys: a, de, hl
 output_order_text:
-      ld hl,troop_order_offsets
-      sla a
-      ld d,0
-      ld e,a
-      add hl,de
-      ld e,(hl)
-      inc hl
-      ld d,(hl)
-      push ix
-      ld ix,text_order
-      add ix,de
-      call text_output
-      pop ix
-      ret
+        ld hl,troop_order_offsets
+        sla a
+        ld d,0
+        ld e,a
+        add hl,de
+        ld e,(hl)
+        inc hl
+        ld d,(hl)
+        push ix
+        ld ix,text_order
+        add ix,de
+        call text_output
+        pop ix
+        ret
 
-      ; Outputs the relevant Order text for
-      ; order a (0-3)
-      ; Destroys: a, de, hl
+        ; Outputs the relevant Order text for
+        ; order a (0-3)
+        ; Destroys: a, de, hl
 output_order_key:
-      ld hl,troop_order_offsets
-      sla a
-      ld d,0
-      ld e,a
-      add hl,de
-      ld e,(hl)
-      inc hl
-      ld d,(hl)
-      push ix
-      ld ix,text_order
-      add ix,de
-      ld a,(ix+0)
-      rst 16
-      pop ix
-      ret
+        ld hl,troop_order_offsets
+        sla a
+        ld d,0
+        ld e,a
+        add hl,de
+        ld e,(hl)
+        inc hl
+        ld d,(hl)
+        push ix
+        ld ix,text_order
+        add ix,de
+        ld a,(ix+0)
+        rst 16
+        pop ix
+        ret
 
-      ; Outputs the relevant Troop name for
-      ; troop number stored in c
-      ; Destroys: a, de, hl
+        ; Outputs the relevant Troop name for
+        ; troop number stored in c
+        ; Destroys: a, de, hl
 output_troop_text:
-      push ix
-      ld ix,text_unit
-      ld hl,troop_type_offsets
-      ld a,c
-      sla a
-      ld d,0
-      ld e,a
-      add hl,de
-      ld e,(hl)
-      inc hl
-      ld d,(hl)
-      add ix,de
-      call text_output
-      pop ix
-      ret
+        push ix
+        ld ix,text_unit
+        ld hl,troop_type_offsets
+        ld a,c
+        sla a
+        ld d,0
+        ld e,a
+        add hl,de
+        ld e,(hl)
+        inc hl
+        ld d,(hl)
+        add ix,de
+        call text_output
+        pop ix
+        ret
 
 move_unit:
 
