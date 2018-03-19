@@ -195,10 +195,84 @@ select_action_output:
 
         call get_order_key
 
+        cp 4
+        jp z, show_status
+
         jp get_order_continue
+
+show_status:
+        call clear_textarea
+
+        ld e,0
+        ld d,17
+        call setxy
+        push ix
+        ld ix,text_unit_status
+        call text_output
+        pop ix
+
+
+
+        ld e,0
+        ld d,18
+        call setxy
+        push ix
+        ld ix,text_unit_weapon
+        call text_output
+        pop ix
+
+
+
+        ld e,15
+        ld d,18
+        call setxy
+        push ix
+        ld ix,text_unit_armour
+        call text_output
+        pop ix
+
+
+
+        ld e,0
+        ld d,19
+        call setxy
+        push ix
+        ld ix,text_unit_strength
+        call text_output
+        pop ix
+
+
+
+        ld e,14
+        ld d,19
+        call setxy
+        push ix
+        ld ix,text_unit_attitude
+        call text_output
+        pop ix
+
+
+
+
+        ld e,0
+        ld d,20
+        call setxy
+        push ix
+        ld ix,text_unit_location
+        call text_output
+        pop ix
+
+        call press_any_key
+
+        ret
 
         ; Gets the order key f,s,h,m
         ; Ignores f if not archer (4/5)
+        ; Returns in a
+        ; 1 - f
+        ; 2 - s
+        ; 3 - h
+        ; 4 - m
 get_order_key:
         push de
         ld d,c

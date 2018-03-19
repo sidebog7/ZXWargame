@@ -69,6 +69,19 @@ text_change_orders:
 text_options_are:
         DEFB "Options are:",0
 
+text_unit_status:
+        DEFB "UNIT ",0
+text_unit_weapon:
+        DEFB "Weapon: ",0
+text_unit_armour:
+        DEFB "Armour: ",0
+text_unit_strength:
+        DEFB "Strength: ",0
+text_unit_attitude:
+        DEFB "Attitude: ",0
+text_unit_location:
+        DEFB "Location: ",0
+
 text_order:
 text_order_fire:
         DEFB "fire",0
