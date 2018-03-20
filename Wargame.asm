@@ -130,8 +130,8 @@ get_order_continue:
         ld a,58
         ld (23695),a
 
-        ld e,(ix+10)
-        ld d,(ix+9)
+        ld e,(ix+troopdata_xpos)
+        ld d,(ix+troopdata_ypos)
         call setxy
 
         ld d,0
@@ -211,6 +211,10 @@ show_status:
         call text_output
         pop ix
 
+        ld a,49
+        add a,c
+        rst 16
+
 
 
         ld e,0
@@ -221,6 +225,15 @@ show_status:
         call text_output
         pop ix
 
+        push bc
+        ld b,(ix+troopdata_weapon)
+        push ix
+        call get_weapon_ix
+
+        ld b,text_weapon_length
+        call text_output_b_chars
+        pop ix
+        pop bc
 
 
         ld e,15
@@ -232,6 +245,16 @@ show_status:
         pop ix
 
 
+        push bc
+        ld b,(ix+troopdata_armour)
+        push ix
+        call get_armour_ix
+
+        ld b,text_armour_length
+        call text_output_b_chars
+        pop ix
+        pop bc
+
 
         ld e,0
         ld d,19
@@ -241,7 +264,9 @@ show_status:
         call text_output
         pop ix
 
-
+        ld h, (ix+troopdata_str)
+        ld l, (ix+troopdata_str+1)
+        call shwnum
 
         ld e,14
         ld d,19
@@ -252,6 +277,15 @@ show_status:
         pop ix
 
 
+        push bc
+        ld b,(ix+troopdata_morale)
+        push ix
+        call get_morale_ix
+
+        ld b,text_morale_length
+        call text_output_b_chars
+        pop ix
+        pop bc
 
 
         ld e,0
@@ -264,6 +298,54 @@ show_status:
 
         call press_any_key
 
+        ret
+
+get_weapon_ix:
+
+        ld a,b
+        cp 0
+        jr z,gwi_noloop
+        xor a
+gwi_loop:
+        add a,text_weapon_length
+        djnz gwi_loop
+gwi_noloop:
+        ld b,0
+        ld c,a
+        ld ix,text_weapon
+        add ix,bc
+        ret
+
+get_armour_ix:
+
+        ld a,b
+        cp 0
+        jr z,gai_noloop
+        xor a
+gai_loop:
+        add a,text_armour_length
+        djnz gai_loop
+gai_noloop:
+        ld b,0
+        ld c,a
+        ld ix,text_armour
+        add ix,bc
+        ret
+
+get_morale_ix:
+
+        ld a,b
+        cp 0
+        jr z,gmi_noloop
+        xor a
+gmi_loop:
+        add a,text_morale_length
+        djnz gmi_loop
+gmi_noloop:
+        ld b,0
+        ld c,a
+        ld ix,text_morale
+        add ix,bc
         ret
 
         ; Gets the order key f,s,h,m
@@ -571,20 +653,21 @@ terrain_row_fin:
 
 
 troops_init:
+ld iy,debug
         ld ix,troops
         ld c,15
 troop_start_loop:
         ld hl,troop_data
         ld b,8
 troop_loop:
-        ld (ix+0),1
-        ld (ix+1),1
+        ld (ix+troopdata_order),1
+        ld (ix+troopdata_dir),1
         ld a,(hl)
-        ld (ix+2),a
+        ld (ix+troopdata_weapon),a
         inc hl
         ld a,(hl)
         inc hl
-        ld (ix+3),a
+        ld (ix+troopdata_armour),a
         ld e,(hl)
         inc hl
         push de
@@ -592,9 +675,11 @@ troop_loop:
         call random_num_btwn_1_d
         pop de
         add a,e
-        ld (ix+4),a
+        ld (ix+troopdata_morale),a
         ld d,100
         call random_num_btwn_1_d
+        ld (iy),a
+        inc iy
         push hl
         ld h,0
         ld l,a
@@ -607,10 +692,10 @@ troop_loop:
         add hl,de
         ld e,10
         add hl,de
-        ld (ix+5),h
-        ld (ix+6),l
-        ld (ix+7),h
-        ld (ix+8),l
+        ld (ix+troopdata_str),h
+        ld (ix+troopdata_str+1),l
+        ld (ix+troopdata_str_orig),h
+        ld (ix+troopdata_str_orig+1),l
         ld (ix+troopdata_ypos),c
         pop hl
         ld d,0

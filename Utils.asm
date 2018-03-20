@@ -174,6 +174,34 @@ gyon_fin:
         ret
 
 
+; Show number passed in hl, right-justified.
+; Destroys: a, de
+shwnum:
+        ld a,48
+        ld de,1000
+        call shwdg
+        ld de,100
+        call shwdg
+        ld de,10
+        call shwdg
+        or 16
+        ld de,1
+shwdg:
+        and 48
+shwdg1:
+        sbc hl,de
+        jr c,shwdg0
+        or 16
+        inc a
+        jr shwdg1
+shwdg0:
+        add hl,de
+        push af
+        rst 16
+        pop af
+        ret
+
+
 fade:
         ld b,7		;maximum of seven colors
 fade0:

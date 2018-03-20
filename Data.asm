@@ -23,13 +23,13 @@ comp_troops:
         DEFS 88,0
 trooplen EQU 11
 
-troopdata1 EQU 0
-troopdata2 EQU 1
-troopdata3 EQU 2
-troopdata4 EQU 3
-troopdata5 EQU 4
-troopdata6 EQU 5
-troopdata7 EQU 7
+troopdata_order EQU 0
+troopdata_dir EQU 1
+troopdata_weapon EQU 2
+troopdata_armour EQU 3
+troopdata_morale EQU 4
+troopdata_str EQU 5
+troopdata_str_orig EQU 7
 troopdata_ypos EQU 9
 troopdata_xpos EQU 10
 
@@ -47,14 +47,14 @@ troopdata_xpos EQU 10
 ; 10  - X Position            - byte
 
 troop_data:
-        DEFB 5,4,3
-        DEFB 5,3,3
         DEFB 4,3,2
-        DEFB 3,3,1
-        DEFB 2,2,1
-        DEFB 2,3,2
-        DEFB 3,2,0
-        DEFB 3,1,0
+        DEFB 4,2,2
+        DEFB 3,2,1
+        DEFB 2,2,0
+        DEFB 1,1,0
+        DEFB 1,2,1
+        DEFB 2,1,-1
+        DEFB 2,0,-1
 
 troop_chars:
         DEFB 148,149,150,150,151,151,152,152
@@ -78,7 +78,7 @@ text_unit_armour:
 text_unit_strength:
         DEFB "Strength: ",0
 text_unit_attitude:
-        DEFB "Attitude: ",0
+        DEFB "Attitude:",0
 text_unit_location:
         DEFB "Location: ",0
 
@@ -94,28 +94,31 @@ text_order_status:
 text_order_rout:
         DEFB "rout",0
 
-
+text_weapon:
+text_weapon_length  EQU 5
 text_weapon_none:
-        DEFB "none",0
+        DEFB "none "
 text_weapon_bow:
-        DEFB "bow",0
+        DEFB "bow  "
 text_weapon_sword:
-        DEFB "sword",0
+        DEFB "sword"
 text_weapon_axe:
-        DEFB "axe",0
+        DEFB "axe  "
 text_weapon_lance:
-        DEFB "lance",0
+        DEFB "lance"
 
+text_morale:
+text_morale_length  EQU 9
 text_morale_cowardly:
-        DEFB "cowardly",0
+        DEFB "cowardly "
 text_morale_unwilling:
-        DEFB "unwilling",0
+        DEFB "unwilling"
 text_morale_willing:
-        DEFB "willing",0
+        DEFB "willing  "
 text_morale_brave:
-        DEFB "brave",0
+        DEFB "brave    "
 text_morale_valiant:
-        DEFB "valiant",0
+        DEFB "valiant  "
 
 text_unit:
 text_unit_knights:
@@ -129,14 +132,16 @@ text_unit_archers:
 text_unit_peasants:
         DEFB "peasants",0
 
+text_armour:
+text_armour_length  EQU 9
 text_armour_none:
-        DEFB "none",0
+        DEFB "none     "
 text_armour_jerkin:
-        DEFB "jerkin",0
+        DEFB "jerkin   "
 text_armour_chainmail:
-        DEFB "chainmail",0
+        DEFB "chainmail"
 text_armour_plate:
-        DEFB "plate",0
+        DEFB "plate    "
 
 text_terrain_plains:
         DEFB "plains",0
