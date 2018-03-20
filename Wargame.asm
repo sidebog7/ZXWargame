@@ -513,7 +513,53 @@ output_troop_text:
 
 output_map_cell_description:
 
+        ld d,(ix+troopdata_ypos)
+        ld e,30
+        call Multiply
+        ld d,0
+        ld e,(ix+troopdata_xpos)
+        add hl,de
+        ld d,h
+        ld e,l
+        push ix
+        ld ix,map
+        add ix,de
 
+        push bc
+
+        ld b,(ix+0)
+        call output_description_text
+
+        pop bc
+
+        pop ix
+
+        ret
+
+output_description_text:
+
+        push ix
+        call get_description_ix
+
+        ld b,text_terrain_length
+        call text_output_b_chars
+        pop ix
+        ret
+
+get_description_ix:
+
+        ld a,b
+        cp 0
+        jr z,gdi_noloop
+        xor a
+gdi_loop:
+        add a,text_terrain_length
+        djnz gdi_loop
+gdi_noloop:
+        ld b,0
+        ld c,a
+        ld ix,text_terrain
+        add ix,bc
         ret
 
 move_unit:
