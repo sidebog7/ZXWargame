@@ -225,16 +225,7 @@ show_status:
         call text_output
         pop ix
 
-        push bc
-        ld b,(ix+troopdata_weapon)
-        push ix
-        call get_weapon_ix
-
-        ld b,text_weapon_length
-        call text_output_b_chars
-        pop ix
-        pop bc
-
+        call output_weapon_text
 
         ld e,15
         ld d,18
@@ -244,17 +235,7 @@ show_status:
         call text_output
         pop ix
 
-
-        push bc
-        ld b,(ix+troopdata_armour)
-        push ix
-        call get_armour_ix
-
-        ld b,text_armour_length
-        call text_output_b_chars
-        pop ix
-        pop bc
-
+        call output_armour_text
 
         ld e,0
         ld d,19
@@ -277,15 +258,7 @@ show_status:
         pop ix
 
 
-        push bc
-        ld b,(ix+troopdata_morale)
-        push ix
-        call get_morale_ix
-
-        ld b,text_morale_length
-        call text_output_b_chars
-        pop ix
-        pop bc
+        call output_morale_text
 
 
         ld e,0
@@ -295,6 +268,8 @@ show_status:
         ld ix,text_unit_location
         call text_output
         pop ix
+
+        call output_map_cell_description
 
         call press_any_key
 
@@ -408,6 +383,43 @@ gok_fin:
 
         ret
 
+
+output_morale_text:
+        push bc
+        ld b,(ix+troopdata_morale)
+        push ix
+        call get_morale_ix
+
+        ld b,text_morale_length
+        call text_output_b_chars
+        pop ix
+        pop bc
+        ret
+
+output_armour_text:
+        push bc
+        ld b,(ix+troopdata_armour)
+        push ix
+        call get_armour_ix
+
+        ld b,text_armour_length
+        call text_output_b_chars
+        pop ix
+        pop bc
+        ret
+
+output_weapon_text:
+        push bc
+        ld b,(ix+troopdata_weapon)
+        push ix
+        call get_weapon_ix
+
+        ld b,text_weapon_length
+        call text_output_b_chars
+        pop ix
+        pop bc
+        ret
+
         ; Outputs the order direction text for
         ; troop stored at ix
         ; Destroys a
@@ -497,6 +509,11 @@ output_troop_text:
         add ix,de
         call text_output
         pop ix
+        ret
+
+output_map_cell_description:
+
+
         ret
 
 move_unit:

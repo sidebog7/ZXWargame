@@ -15,13 +15,14 @@ colscr  EQU 56
 colbdr  EQU 0
 
 map:
-        DEFS 480,0
+        DEFS 30*16,0
+trooplen EQU 11
 troops:
 user_troops:
-        DEFS 88,0
+        DEFS trooplen*8,0
 comp_troops:
-        DEFS 88,0
-trooplen EQU 11
+        DEFS trooplen*8,0
+
 
 troopdata_order EQU 0
 troopdata_dir EQU 1
@@ -76,7 +77,7 @@ text_unit_weapon:
 text_unit_armour:
         DEFB "Armour: ",0
 text_unit_strength:
-        DEFB "Strength: ",0
+        DEFB "Strngth: ",0
 text_unit_attitude:
         DEFB "Attitude:",0
 text_unit_location:
@@ -143,14 +144,16 @@ text_armour_chainmail:
 text_armour_plate:
         DEFB "plate    "
 
+text_terrain:
+text_terrain_length EQU 7
 text_terrain_plains:
-        DEFB "plains",0
+        DEFB "plains "
 text_terrain_village:
-        DEFB "village",0
+        DEFB "village"
 text_terrain_woods:
-        DEFB "woods",0
+        DEFB "woods  "
 text_terrain_hills:
-        DEFB "hills",0
+        DEFB "hills  "
 
 text_direction:
 text_direction_north:
