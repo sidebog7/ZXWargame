@@ -70,6 +70,9 @@ text_change_orders:
 text_options_are:
         DEFB "Options are:",0
 
+text_which_way:
+        DEFB "Which way (NSEW)?",0
+
 text_unit_status:
         DEFB "UNIT ",0
 text_unit_weapon:
@@ -197,6 +200,11 @@ troop_order_3:
         DEFW text_order_status-text_order
 troop_order_4:
         DEFW text_order_rout-text_order
+
+key_fight   EQU 1
+key_halt    EQU 2
+key_move    EQU 3
+key_status  EQU 4
 
 debug:
         DEFW 0

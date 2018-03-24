@@ -45,8 +45,8 @@ game_loop:
 
         ld a,(ix+0)
         cp 3
-
         jr nc,after_order
+
         call get_order
 after_order:
 
@@ -126,6 +126,7 @@ get_order_no_move:
         call select_action
 
 get_order_continue:
+        call clear_textarea
         call press_any_key
 
         ld a,58
@@ -196,10 +197,85 @@ select_action_output:
 
         call get_order_key
 
-        cp 4
-        jp z, show_status
+        cp key_status
+        jp z,show_status
+
+        ld (ix+troopdata_order), a
+
+        cp key_move
+        jp z,move_troop
 
         jr get_order_continue
+
+
+move_troop:
+        push de
+
+        call clear_textarea
+
+        ld d,17
+        ld e,0
+        call setxy
+        push ix
+        ld ix,text_which_way
+        call text_output
+        pop ix
+
+        call get_direction_key
+
+        ld (ix+troopdata_dir),a
+
+        pop de
+
+        ret
+
+
+get_direction_key:
+        push bc
+
+gdk_loop:
+        ld bc,32766
+        in c,(c)
+
+        ld a,c
+        and 8
+        jr z,gdk_n
+
+        ld bc,65022
+        in c,(c)
+
+        ld a,c
+        and 2
+        jr z,gdk_s
+
+        ld bc,64510
+        in c,(c)
+
+        ld a,c
+        and 4
+        jr z,gdk_e
+        ld a,c
+        and 2
+        jr z,gdk_w
+
+
+        jr gdk_loop
+
+gdk_n:
+        ld a,1
+        jr gdk_fin
+gdk_s:
+        ld a,3
+        jr gdk_fin
+gdk_e:
+        ld a,4
+        jr gdk_fin
+gdk_w:
+        ld a,2
+gdk_fin:
+
+        pop bc
+        ret
 
         ; Gets the order key f,s,h,m
         ; Ignores f if not archer (4/5)
@@ -244,16 +320,16 @@ gok_ignore_f:
 
         jr gok_loop
 gok_press_f:
-        ld a,1
+        ld a,key_fight
         jr gok_fin
 gok_press_h:
-        ld a,2
+        ld a,key_halt
         jr gok_fin
 gok_press_m:
-        ld a,3
+        ld a,key_move
         jr gok_fin
 gok_press_s:
-        ld a,4
+        ld a,key_status
 
 gok_fin:
         pop bc
