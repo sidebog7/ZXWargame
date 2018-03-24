@@ -41,7 +41,7 @@ game_loop_start:
         ld b,8
         ld c,0
         ld ix,troops
-game_loop:
+game_user_loop:
 
         ld a,(ix+0)
         cp 3
@@ -55,299 +55,93 @@ after_order:
         ld de,trooplen
         add ix,de
         inc c
-        djnz game_loop
+        djnz game_user_loop
+
+        ld b,8
+        ld c,8
+game_comp_loop:
+
+
+
+        ld de,trooplen
+        add ix,de
+        inc c
+        djnz game_comp_loop
+
+        call perform_orders
+
         ret
 
-get_order:
-        call clear_textarea
 
-        ld a,56+128
-        ld (23695),a
+perform_orders:
 
-        ld e,(ix+10)
-        ld d,(ix+9)
-        call setxy
+        ld b,16
+        ld c,0
+        ld ix,troops
+po_order_loop:
 
-        ld d,0
-        ld e,c
-        ld hl,troop_chars
-        add hl,de
-        ld a,(hl)
-        rst 16
+        ld a,(ix+troopdata_order)
+        cp key_status
+        jp p,po_order_loop_fin
 
         ld a,56
         ld (23695),a
+        call clear_textarea
 
-        ld d,17
         ld e,0
+        ld d,17
         call setxy
         push ix
-        ld ix,text_unit_number
+        ld ix,text_unit_word
         call text_output
         pop ix
+
         ld a,49
         add a,c
         rst 16
-        ld a,32
-        rst 16
 
-        call output_troop_text
-
-        ld d,18
-        ld e,0
-        call setxy
         push ix
-        ld ix,text_current_orders
+        ld ix,text_decides_to_act
         call text_output
         pop ix
 
-        call output_order_text
-        ld a,(ix+0)
-        cp 3
-        jr nz,get_order_no_move
-
-        call output_order_direction
-
-get_order_no_move:
-
-        ld d,19
-        ld e,0
-        call setxy
-        push ix
-        ld ix,text_change_orders
-        call text_output
-        pop ix
-
-        call get_y_or_n
-
-        cp 1
-        jr nz,get_order_continue
-
-        call select_action
-
-get_order_continue:
-        call clear_textarea
-        call press_any_key
-
-        ld a,58
+        ld d,57
+        ld a,c
+        cp 8
+        jr c,po_user_colour
+        inc d
+po_user_colour:
+        ld a,d
         ld (23695),a
 
-        ld e,(ix+troopdata_xpos)
-        ld d,(ix+troopdata_ypos)
-        call setxy
-
-        ld d,0
-        ld e,c
-        ld hl,troop_chars
-        add hl,de
-        ld a,(hl)
-        rst 16
-
-        ret
-
-
-select_action:
-        call clear_textarea
-
-        ld d,18
-        ld e,0
-        call setxy
-        push ix
-        ld ix,text_options_are
-        call text_output
-        pop ix
-
-        ld a,c
-
-        push bc
-
-        ld b,4
-        ld c,0
-
-        cp 4
-        jr z,select_action_output
-        cp 5
-        jr z,select_action_output
-        inc c
-        dec b
-
-select_action_output:
-
-        ld a,18
-        add a,c
-        ld d,a
-        ld e,14
-        call setxy
-
-        ld a,c
-        call output_order_key
-        ld a,32
-        rst 16
-        ld a,45
-        rst 16
-        ld a,32
-        rst 16
-        ld a,c
-        call output_order_text
-
-        inc c
-        djnz select_action_output
-
-        pop bc
-
-        call get_order_key
-
-        cp key_status
-        jp z,show_status
-
-        ld (ix+troopdata_order), a
-
+        ld a,(ix+troopdata_order)
         cp key_move
-        jp z,move_troop
+        jr z,perform_move_order
 
-        jr get_order_continue
+        cp key_halt
+        jr z,po_order_loop_fin
+
+        jr perform_fight_order
+
+po_continue_loop:
 
 
-move_troop:
-        push de
-
-        call clear_textarea
-
-        ld d,17
-        ld e,0
-        call setxy
-        push ix
-        ld ix,text_which_way
-        call text_output
-        pop ix
-
-        call get_direction_key
-
-        ld (ix+troopdata_dir),a
-
-        pop de
+po_order_loop_fin:
+        ld de,trooplen
+        add ix,de
+        inc c
+        djnz po_order_loop
 
         ret
 
 
-get_direction_key:
-        push bc
+perform_fight_order:
 
-gdk_loop:
-        ld bc,32766
-        in c,(c)
+        jr po_continue_loop
 
-        ld a,c
-        and 8
-        jr z,gdk_n
+perform_move_order:
 
-        ld bc,65022
-        in c,(c)
-
-        ld a,c
-        and 2
-        jr z,gdk_s
-
-        ld bc,64510
-        in c,(c)
-
-        ld a,c
-        and 4
-        jr z,gdk_e
-        ld a,c
-        and 2
-        jr z,gdk_w
-
-
-        jr gdk_loop
-
-gdk_n:
-        ld a,1
-        jr gdk_fin
-gdk_s:
-        ld a,3
-        jr gdk_fin
-gdk_e:
-        ld a,4
-        jr gdk_fin
-gdk_w:
-        ld a,2
-gdk_fin:
-
-        pop bc
-        ret
-
-        ; Gets the order key f,s,h,m
-        ; Ignores f if not archer (4/5)
-        ; Returns in a
-        ; 1 - f
-        ; 2 - s
-        ; 3 - h
-        ; 4 - m
-get_order_key:
-        push de
-        ld d,c
-        push bc
-gok_loop:
-        ld bc,65022
-        in c,(c)
-
-        ld a,d
-        cp 5
-        jr z,gok_check_f
-        cp 4
-        jr z,gok_check_f
-        jr gok_ignore_f
-
-gok_check_f:
-        ld a,c
-        and 8
-        jr z,gok_press_f
-gok_ignore_f:
-        ld a,c
-        and 2
-        jr z,gok_press_s
-
-        ld bc,49150
-        in a,(c)
-        and 16
-        jr z,gok_press_h
-
-        ld bc,32766
-        in a,(c)
-        and 4
-        jr z,gok_press_m
-
-        jr gok_loop
-gok_press_f:
-        ld a,key_fight
-        jr gok_fin
-gok_press_h:
-        ld a,key_halt
-        jr gok_fin
-gok_press_m:
-        ld a,key_move
-        jr gok_fin
-gok_press_s:
-        ld a,key_status
-
-gok_fin:
-        pop bc
-        pop de
-
-        ret
-
-
-move_unit:
-
-
-        ret
-
-control:
-
-
-        ret
-
+        jr po_continue_loop
 
 terrain_init:
         ld hl,map
@@ -585,8 +379,8 @@ troop_choice:
         pop bc
         ret
 
-
-
+        include 'Input.asm'
+        include 'GameAI.asm'
         include 'Display.asm'
         include 'Utils.asm'
 

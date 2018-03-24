@@ -73,7 +73,10 @@ text_options_are:
 text_which_way:
         DEFB "Which way (NSEW)?",0
 
-text_unit_status:
+text_decides_to_act:
+        DEFB " decides to act",0
+
+text_unit_word:
         DEFB "UNIT ",0
 text_unit_weapon:
         DEFB "Weapon: ",0

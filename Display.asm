@@ -68,7 +68,7 @@ show_status:
         ld d,17
         call setxy
         push ix
-        ld ix,text_unit_status
+        ld ix,text_unit_word
         call text_output
         pop ix
 
