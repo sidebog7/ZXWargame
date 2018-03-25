@@ -174,45 +174,16 @@ troops_output:
         ld a,c
         rlca
         rlca
-        rlca
+        rlca                        ; a = 0 or 8
         push bc
-        push de
-        ld b,8
+        ld b,8                      ; Count from 8 to 1
         ld c,a
         ld d,1
         ld e,30
 
 troop_choice:
-        push de
-        ld d,7
-        ld e,0
-        call random_num
 
-        ld d,0
-        ld e,a
-        add a,c
-
-        ld ix,troop_chars
-        add ix,de
-
-        ld d,trooplen
-        ld e,a
-
-        call Multiply
-
-        ld de,troops
-        add hl,de
-
-        ld d,0
-        ld e,troopdata_xpos
-        add hl,de
-
-        pop de
-
-        ld a,(hl)
-        or a
-
-        jr nz,troop_choice
+        call get_unplaced_troop
 
         push de
         ld d,4
@@ -225,23 +196,62 @@ troop_choice:
         ld b,d
         call divide_d_e
         ld a,b
-        sub d
         pop bc
+        sub d
         ld d,a
 
-        ld (hl),d
+        ld (ix+troopdata_xpos),d
 
         push de
-        ld e,(hl)
-        dec hl
-        ld d,(hl)
+        ld e,(ix+troopdata_xpos)
+        ld d,(ix+troopdata_ypos)
         call setxy
-        ld a,(ix+0)
+
+        ld d,h
+        ld e,l
+        ld hl,troop_chars
+        add hl,de
+        ld a,(hl)
         rst 16
         pop de
 
         djnz troop_choice
 
-        pop de
         pop bc
+        ret
+
+get_unplaced_troop:
+        push de
+        ld d,7
+        ld e,0
+        call random_num                   ; a = between 0 and 7
+        pop de
+
+        ld h,0
+        ld l,a
+
+        push hl
+
+        ld ix,troops
+
+        push de
+        add a,c
+        ld e,a
+        ld d,trooplen
+        call Multiply
+
+        ld d,h
+        ld e,l
+
+        add ix,de                         ; IX is the troop location
+
+        pop de
+
+        ld a,(ix+troopdata_xpos)
+        or a
+
+        pop hl
+
+        jr nz,get_unplaced_troop          ; Repeat if the troop already has an xpos
+
         ret
