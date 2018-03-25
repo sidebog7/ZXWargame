@@ -19,6 +19,13 @@ perform_move_order:
 
 
 
+        call output_troop_after_move
+
+
+        jr po_continue_loop
+
+
+output_troop_after_move:
         ld a,c
         cp 8
         ld a,58
@@ -32,7 +39,7 @@ perform_move_order:
         cp 8
         jr c,pmo_c_user_player
         sub 8
-pmo_c_user_player
+        pmo_c_user_player
         ld d,0
         ld e,c
         ld hl,troop_chars
@@ -50,8 +57,7 @@ pmo_c_user_player
 
         pop ix
 
-
-        jr po_continue_loop
+        ret
 
         ; Returns in a the tile to draw
         ; Sets the temporary colour to the relevant colour
