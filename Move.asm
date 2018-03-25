@@ -45,6 +45,14 @@ perform_move_order:
         ; Sets the temporary colour to the relevant colour
 get_terrain_data:
 
+        push af
+        ld hl,terrain_colours
+        add a,l
+        ld l,a
+        ld a,(hl)
+        ld (23695),a
+        pop af
+
         cp 0
         jr z,gtd_blank
         add a,143
@@ -52,14 +60,5 @@ get_terrain_data:
 gtd_blank:
         ld a,32
 gtd_continue:
-
-        push af
-        ld hl,terrain_colours
-        add a,l
-        ld l,a
-        ld a,(hl)
-        ld a,56
-        ld (23695),a
-        pop af
 
         ret
