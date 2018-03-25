@@ -12,7 +12,7 @@ clrrow  call setxy
         rst 16
         dec e
         jp m,clrnr
-        jp clrrow
+        jr clrrow
 clrnr   djnz clrrep
         pop de
         ret
@@ -161,10 +161,10 @@ gyon_loop:
         cp 8
         jr nz,press_n
 
-        jp gyon_loop
+        jr gyon_loop
 press_y:
         ld a,1
-        jp gyon_fin
+        jr gyon_fin
 press_n:
         ld a,2
 

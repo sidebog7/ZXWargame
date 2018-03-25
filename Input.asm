@@ -132,7 +132,7 @@ select_action_output:
         ld (ix+troopdata_order), a
 
         cp key_move
-        jp z,move_troop
+        jr z,move_troop
 
         jr get_order_continue
 
