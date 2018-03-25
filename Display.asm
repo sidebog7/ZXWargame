@@ -67,10 +67,8 @@ show_status:
         ld e,0
         ld d,17
         call setxy
-        push ix
-        ld ix,text_unit_word
+        ld hl,text_unit_word
         call text_output
-        pop ix
 
         ld a,49
         add a,c
@@ -81,30 +79,24 @@ show_status:
         ld e,0
         ld d,18
         call setxy
-        push ix
-        ld ix,text_unit_weapon
+        ld hl,text_unit_weapon
         call text_output
-        pop ix
 
         call output_weapon_text
 
         ld e,15
         ld d,18
         call setxy
-        push ix
-        ld ix,text_unit_armour
+        ld hl,text_unit_armour
         call text_output
-        pop ix
 
         call output_armour_text
 
         ld e,0
         ld d,19
         call setxy
-        push ix
-        ld ix,text_unit_strength
+        ld hl,text_unit_strength
         call text_output
-        pop ix
 
         ld h, (ix+troopdata_str)
         ld l, (ix+troopdata_str+1)
@@ -113,10 +105,8 @@ show_status:
         ld e,14
         ld d,19
         call setxy
-        push ix
-        ld ix,text_unit_attitude
+        ld hl,text_unit_attitude
         call text_output
-        pop ix
 
 
         call output_morale_text
@@ -125,21 +115,19 @@ show_status:
         ld e,0
         ld d,20
         call setxy
-        push ix
-        ld ix,text_unit_location
+        ld hl,text_unit_location
         call text_output
-        pop ix
 
         call output_map_cell_description
 
         call press_any_key
+        
+        jp get_order_continue_no_pak
 
-        ret
-
-        ; Sets ix to the address of the weapon text
+        ; Sets hl to the address of the weapon text
         ; for the weapon in b
         ; Destroys: a, ix
-get_weapon_ix:
+get_weapon_hl:
 
         ld a,b
         cp 0
@@ -151,14 +139,14 @@ gwi_loop:
 gwi_noloop:
         ld b,0
         ld c,a
-        ld ix,text_weapon
-        add ix,bc
+        ld hl,text_weapon
+        add hl,bc
         ret
 
-        ; Sets ix to the address of the armour text
+        ; Sets hl to the address of the armour text
         ; for the armour in b
         ; Destroys: a, ix
-get_armour_ix:
+get_armour_hl:
 
         ld a,b
         cp 0
@@ -170,14 +158,14 @@ gai_loop:
 gai_noloop:
         ld b,0
         ld c,a
-        ld ix,text_armour
-        add ix,bc
+        ld hl,text_armour
+        add hl,bc
         ret
 
-        ; Sets ix to the address of the morale text
+        ; Sets hl to the address of the morale text
         ; for the weapon in b
         ; Destroys: a, ix
-get_morale_ix:
+get_morale_hl:
 
         ld a,b
         cp 0
@@ -189,8 +177,8 @@ gmi_loop:
 gmi_noloop:
         ld b,0
         ld c,a
-        ld ix,text_morale
-        add ix,bc
+        ld hl,text_morale
+        add hl,bc
         ret
 
 
@@ -200,12 +188,10 @@ gmi_noloop:
 output_morale_text:
         push bc
         ld b,(ix+troopdata_morale)
-        push ix
-        call get_morale_ix
+        call get_morale_hl
 
         ld b,text_morale_length
         call text_output_b_chars
-        pop ix
         pop bc
         ret
 
@@ -214,12 +200,10 @@ output_morale_text:
 output_armour_text:
         push bc
         ld b,(ix+troopdata_armour)
-        push ix
-        call get_armour_ix
+        call get_armour_hl
 
         ld b,text_armour_length
         call text_output_b_chars
-        pop ix
         pop bc
         ret
 
@@ -228,12 +212,10 @@ output_armour_text:
 output_weapon_text:
         push bc
         ld b,(ix+troopdata_weapon)
-        push ix
-        call get_weapon_ix
+        call get_weapon_hl
 
         ld b,text_weapon_length
         call text_output_b_chars
-        pop ix
         pop bc
         ret
 
@@ -244,19 +226,17 @@ output_order_direction:
         ld a,32
         rst 16
         push bc
-        ld a,(ix+1)
+        ld a,(ix+troopdata_dir)
         ld b,a
         sla a
         sla a
         add a,b
-        push ix
-        ld ix,text_direction
+        ld hl,text_direction
         ld b,0
         ld c,a
-        add ix,bc
+        add hl,bc
         ld b,5
         call text_output_b_chars
-        pop ix
         pop bc
         ret
 
@@ -264,7 +244,7 @@ output_order_direction:
         ; troop at ix
         ; Destroys: a, de, hl
 output_troop_order_text:
-        ld a,(ix+0)
+        ld a,(ix+troopdata_order)
         call output_order_text
         ret
 
@@ -280,11 +260,9 @@ output_order_text:
         ld e,(hl)
         inc hl
         ld d,(hl)
-        push ix
-        ld ix,text_order
-        add ix,de
+        ld hl,text_order
+        add hl,de
         call text_output
-        pop ix
         ret
 
         ; Outputs the relevant Order text for
@@ -299,21 +277,19 @@ output_order_key:
         ld e,(hl)
         inc hl
         ld d,(hl)
-        push ix
-        ld ix,text_order
-        add ix,de
-        ld a,(ix+0)
+        ld hl,text_order
+        add hl,de
+        ld a,(hl)
         rst 16
-        pop ix
         ret
 
         ; Outputs the relevant Troop name for
         ; troop number stored in c
         ; Destroys: a, de, hl
 output_troop_text:
-        push ix
-        ld ix,text_unit
+
         ld hl,troop_type_offsets
+        add hl,de
         ld a,c
         sla a
         ld d,0
@@ -322,9 +298,9 @@ output_troop_text:
         ld e,(hl)
         inc hl
         ld d,(hl)
-        add ix,de
+        ld hl,text_unit
+        add hl,de
         call text_output
-        pop ix
         ret
 
         ; Outputs the terrain referenced at the
@@ -339,18 +315,15 @@ output_map_cell_description:
         add hl,de
         ld d,h
         ld e,l
-        push ix
-        ld ix,map
-        add ix,de
+        ld hl,map
+        add hl,de
 
         push bc
 
-        ld b,(ix+0)
+        ld b,(hl)
         call output_description_text
 
         pop bc
-
-        pop ix
 
         ret
 
@@ -359,18 +332,16 @@ output_map_cell_description:
         ; Destroys: bc
 output_description_text:
 
-        push ix
-        call get_description_ix
+        call get_description_hl
 
         ld b,text_terrain_length
         call text_output_b_chars
-        pop ix
         ret
 
         ; Retrieves the address for text for terrain
         ; number b into ix
         ; Destroys: a, bc, ix
-get_description_ix:
+get_description_hl:
         ld a,b
         cp 0
         jr z,gdi_noloop
@@ -381,8 +352,8 @@ gdi_loop:
 gdi_noloop:
         ld b,0
         ld c,a
-        ld ix,text_terrain
-        add ix,bc
+        ld hl,text_terrain
+        add hl,bc
         ret
 
 

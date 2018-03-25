@@ -91,19 +91,15 @@ po_order_loop:
         ld e,0
         ld d,17
         call setxy
-        push ix
-        ld ix,text_unit_word
+        ld hl,text_unit_word
         call text_output
-        pop ix
 
         ld a,49
         add a,c
         rst 16
 
-        push ix
-        ld ix,text_decides_to_act
+        ld hl,text_decides_to_act
         call text_output
-        pop ix
 
         ld d,57
         ld a,c
@@ -231,7 +227,6 @@ terrain_row_fin:
 
 
 troops_init:
-        ld iy,debug
         ld ix,troops
         ld c,15
 troop_start_loop:
@@ -256,8 +251,6 @@ troop_loop:
         ld (ix+troopdata_morale),a
         ld d,100
         call random_num_btwn_1_d
-        ld (iy),a
-        inc iy
         push hl
         ld h,0
         ld l,a

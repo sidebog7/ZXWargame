@@ -4,8 +4,8 @@ get_order:
         ld a,56+128
         ld (23695),a
 
-        ld e,(ix+10)
-        ld d,(ix+9)
+        ld e,(ix+troopdata_xpos)
+        ld d,(ix+troopdata_ypos)
         call setxy
 
         ld d,0
@@ -21,10 +21,8 @@ get_order:
         ld d,17
         ld e,0
         call setxy
-        push ix
-        ld ix,text_unit_number
+        ld hl,text_unit_number
         call text_output
-        pop ix
         ld a,49
         add a,c
         rst 16
@@ -36,13 +34,11 @@ get_order:
         ld d,18
         ld e,0
         call setxy
-        push ix
-        ld ix,text_current_orders
+        ld hl,text_current_orders
         call text_output
-        pop ix
 
         call output_order_text
-        ld a,(ix+0)
+        ld a,(ix+troopdata_order)
         cp 3
         jr nz,get_order_no_move
 
@@ -53,22 +49,21 @@ get_order_no_move:
         ld d,19
         ld e,0
         call setxy
-        push ix
-        ld ix,text_change_orders
+        ld hl,text_change_orders
         call text_output
-        pop ix
 
         call get_y_or_n
 
         cp 1
         jr nz,get_order_continue
 
-        call select_action
+        jr select_action
 
 get_order_continue:
         call clear_textarea
         call press_any_key
 
+get_order_continue_no_pak:
         ld a,58
         ld (23695),a
 
@@ -92,10 +87,8 @@ select_action:
         ld d,18
         ld e,0
         call setxy
-        push ix
-        ld ix,text_options_are
+        ld hl,text_options_are
         call text_output
-        pop ix
 
         ld a,c
 
@@ -156,10 +149,8 @@ move_troop:
         ld d,17
         ld e,0
         call setxy
-        push ix
-        ld ix,text_which_way
+        ld hl,text_which_way
         call text_output
-        pop ix
 
         call get_direction_key
 
@@ -167,7 +158,7 @@ move_troop:
 
         pop de
 
-        ret
+        jp get_order_continue
 
 
 get_direction_key:

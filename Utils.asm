@@ -100,18 +100,17 @@ divide_loop:
         sub	e
         inc	d
 
-        djnz	divide_loop
+        djnz divide_loop
         pop bc
         ret
 
 press_any_key:
-        push ix
         ld a,56
         ld (23695),a
         push de
         ld d,21
         ld e,9
-        ld ix,text_press_enter
+        ld hl,text_press_enter
         call setxy
         call text_output
         pop de
@@ -124,25 +123,25 @@ pak_loop:
         cp 1
         jr z,pak_loop
         pop bc
-        pop ix
         ret
 
 text_output:
-        ld a,(ix+0)
+        ld a,(hl)
+text_output_loop:
         rst 16
-        ld a,(ix+1)
+        inc hl
+        ld a,(hl)
         or a
-        jp z,text_fin_output
-        inc ix
 
-        jp text_output
+        jr z,text_fin_output
+        jr text_output_loop
 text_fin_output:
         ret
 
 text_output_b_chars:
-        ld a,(ix+0)
+        ld a,(hl)
         rst 16
-        inc ix
+        inc hl
         djnz text_output_b_chars
         ret
 
