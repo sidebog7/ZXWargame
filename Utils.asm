@@ -187,6 +187,13 @@ get_map_cell_in_hl:
 
         ret
 
+setxy_troop:
+        ld e,(ix+troopdata_xpos)
+        inc e
+        ld d,(ix+troopdata_ypos)
+        inc d
+        call setxy
+        ret
 
 ; Show number passed in hl, right-justified.
 ; Destroys: a, de

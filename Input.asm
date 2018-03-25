@@ -4,9 +4,7 @@ get_order:
         ld a,56+128
         ld (23695),a
 
-        ld e,(ix+troopdata_xpos)
-        ld d,(ix+troopdata_ypos)
-        call setxy
+        call setxy_troop
 
         ld d,0
         ld e,c
@@ -18,7 +16,7 @@ get_order:
         ld a,56
         ld (23695),a
 
-        ld d,17
+        ld d,text_row1
         ld e,0
         call setxy
         ld hl,text_unit_number
@@ -31,7 +29,7 @@ get_order:
 
         call output_troop_text
 
-        ld d,18
+        ld d,text_row2
         ld e,0
         call setxy
         ld hl,text_current_orders
@@ -46,7 +44,7 @@ get_order:
 
 get_order_no_move:
 
-        ld d,19
+        ld d,text_row3
         ld e,0
         call setxy
         ld hl,text_change_orders
@@ -67,9 +65,7 @@ get_order_continue_no_pak:
         ld a,58
         ld (23695),a
 
-        ld e,(ix+troopdata_xpos)
-        ld d,(ix+troopdata_ypos)
-        call setxy
+        call setxy_troop
 
         ld d,0
         ld e,c
@@ -84,7 +80,7 @@ get_order_continue_no_pak:
 select_action:
         call clear_textarea
 
-        ld d,18
+        ld d,text_row1
         ld e,0
         call setxy
         ld hl,text_options_are
@@ -106,7 +102,7 @@ select_action:
 
 select_action_output:
 
-        ld a,18
+        ld a,text_row1
         add a,c
         ld d,a
         ld e,14
@@ -146,7 +142,7 @@ move_troop:
 
         call clear_textarea
 
-        ld d,17
+        ld d,text_row1
         ld e,0
         call setxy
         ld hl,text_which_way

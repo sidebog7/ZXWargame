@@ -1,10 +1,16 @@
 perform_move_order:
 
-        ld a,(ix+troopdata_xpos)
-        ld (troop_old_xpos), a
-
-        ld a,(ix+troopdata_ypos)
-        ld (troop_old_ypos), a
+        push de
+        push hl
+        push bc
+        push ix
+        pop hl
+        ld de,troop_old
+        ld bc,trooplen
+        ldir
+        pop bc
+        pop hl
+        pop de
 
         call get_map_cell_in_hl
 
@@ -22,16 +28,15 @@ perform_move_order:
 
 
 
+        push ix
+        ld ix,troop_old
 
-
-        ld e,(ix+troopdata_xpos)
-        ld d,(ix+troopdata_ypos)
-        call setxy
+        call setxy_troop
         ld a,(troop_old_terrain)
         call get_terrain_data
         rst 16
 
-
+        pop ix
 
 
         jr po_continue_loop
@@ -42,7 +47,7 @@ get_terrain_data:
 
         cp 0
         jr z,gtd_blank
-        add a,48
+        add a,143
         jr gtd_continue
 gtd_blank:
         ld a,32

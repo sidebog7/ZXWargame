@@ -29,6 +29,7 @@ terrain_colour_hill2    DEFB  %00111101
 colscr  EQU 56
 colbdr  EQU 0
 
+        org 50000
 map:
         DEFS 30*16,0
 trooplen EQU 11
@@ -75,13 +76,15 @@ troop_data:
 troop_chars:
         DEFB 148,149,150,150,151,151,152,152
 
-
-troop_old_xpos:
-        DEFB 0
-troop_old_ypos:
-        DEFB 0
+troop_old:
+        DEFS trooplen,0
 troop_old_terrain:
         DEFB 0
+
+text_row1   EQU 18
+text_row2   EQU 19
+text_row3   EQU 20
+text_row4   EQU 21
 
 text_unit_number:
         DEFB "Unit number ",0

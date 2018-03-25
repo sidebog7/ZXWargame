@@ -149,9 +149,8 @@ troop_loop:
         djnz troop_loop
 
         ld a,c
-        sub 14
+        sub 15
         ld c,a
-        dec a
         jr z,troop_start_loop
 
         ret
@@ -203,16 +202,14 @@ troop_choice:
         ld (ix+troopdata_xpos),d
 
         push de
-        ld e,(ix+troopdata_xpos)
-        ld d,(ix+troopdata_ypos)
-        call setxy
+        call setxy_troop
 
         ld d,h
         ld e,l
         ld hl,troop_chars
         add hl,de
         ld a,(hl)
-        rst 16
+        ;rst 16
         pop de
 
         djnz troop_choice

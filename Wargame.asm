@@ -89,7 +89,7 @@ po_order_loop:
         call clear_textarea
 
         ld e,0
-        ld d,17
+        ld d,text_row1
         call setxy
         ld hl,text_unit_word
         call text_output

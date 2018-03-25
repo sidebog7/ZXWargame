@@ -4,7 +4,7 @@
 border:
         ld a,56
         ld (23695),a
-        ld b,16
+        ld b,17
 border_edge:
         ld d,b
         ld e,31
@@ -16,7 +16,7 @@ border_edge:
         ld a,150
         rst 16
         djnz border_edge
-        ld d,16
+        ld d,17
 border_horizontal:
         ld e,0
         call setxy
@@ -41,8 +41,8 @@ clear_textarea:
         push bc
         ld a,56
         ld (23695),a
-        ld b,5
-        ld d,17
+        ld b,4
+        ld d,text_row1
         ld e,0
         call setxy
 clear_loop1:
@@ -65,7 +65,7 @@ show_status:
         call clear_textarea
 
         ld e,0
-        ld d,17
+        ld d,text_row1
         call setxy
         ld hl,text_unit_word
         call text_output
@@ -77,7 +77,7 @@ show_status:
 
 
         ld e,0
-        ld d,18
+        ld d,text_row2
         call setxy
         ld hl,text_unit_weapon
         call text_output
@@ -85,7 +85,7 @@ show_status:
         call output_weapon_text
 
         ld e,15
-        ld d,18
+        ld d,text_row2
         call setxy
         ld hl,text_unit_armour
         call text_output
@@ -93,7 +93,7 @@ show_status:
         call output_armour_text
 
         ld e,0
-        ld d,19
+        ld d,text_row3
         call setxy
         ld hl,text_unit_strength
         call text_output
@@ -103,7 +103,7 @@ show_status:
         call shwnum
 
         ld e,14
-        ld d,19
+        ld d,text_row3
         call setxy
         ld hl,text_unit_attitude
         call text_output
@@ -113,7 +113,7 @@ show_status:
 
 
         ld e,0
-        ld d,20
+        ld d,text_row4
         call setxy
         ld hl,text_unit_location
         call text_output
