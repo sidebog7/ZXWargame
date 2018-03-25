@@ -73,6 +73,17 @@ terrain_output:
         ld a,(hl)
         or a
         jr z,terrain_row_fin  ; a = 0
+
+        push hl
+
+        ld hl,terrain_colours
+        add a,l
+        ld l,a
+        ld a,(hl)
+        ld (23695),a
+
+        pop hl
+
         call setxy
         ld a,143
         add a,(hl)

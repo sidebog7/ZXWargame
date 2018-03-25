@@ -9,11 +9,6 @@ perform_move_order:
         call get_map_cell_in_hl
 
         ld a,(hl)
-        cp 0
-        jr z,pmo_no_terrain
-        add a,143-32
-pmo_no_terrain:
-        add a,32
         ld (troop_old_terrain),a
 
 
@@ -26,13 +21,40 @@ pmo_no_terrain:
         ld (23695),a
 
 
+
+
+
         ld e,(ix+troopdata_xpos)
         ld d,(ix+troopdata_ypos)
         call setxy
         ld a,(troop_old_terrain)
+        call get_terrain_data
         rst 16
 
 
 
 
         jr po_continue_loop
+
+        ; Returns in a the tile to draw
+        ; Sets the temporary colour to the relevant colour
+get_terrain_data:
+
+        cp 0
+        jr z,gtd_blank
+        add a,48
+        jr gtd_continue
+gtd_blank:
+        ld a,32
+gtd_continue:
+
+        push af
+        ld hl,terrain_colours
+        add a,l
+        ld l,a
+        ld a,(hl)
+        ld a,56
+        ld (23695),a
+        pop af
+
+        ret

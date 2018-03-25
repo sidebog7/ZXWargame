@@ -17,6 +17,15 @@ terrain_tree    EQU 2
 terrain_hill1   EQU 3
 terrain_hill2   EQU 4
 
+terrain_colours:
+;                              FBPPPIII
+terrain_colour_blank    DEFB  %00111000
+terrain_colour_house    DEFB  %00111011
+terrain_colour_tree     DEFB  %00111100
+terrain_colour_hill1    DEFB  %00111101
+terrain_colour_hill2    DEFB  %00111101
+
+
 colscr  EQU 56
 colbdr  EQU 0
 
