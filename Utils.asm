@@ -173,6 +173,21 @@ gyon_fin:
         ret
 
 
+get_map_cell_in_hl:
+        ld d,(ix+troopdata_ypos)
+        ld e,30
+        call Multiply
+        ld d,0
+        ld e,(ix+troopdata_xpos)
+        add hl,de
+        ld d,h
+        ld e,l
+        ld hl,map
+        add hl,de
+
+        ret
+
+
 ; Show number passed in hl, right-justified.
 ; Destroys: a, de
 shwnum:

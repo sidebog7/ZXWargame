@@ -60,6 +60,14 @@ troop_data:
 troop_chars:
         DEFB 148,149,150,150,151,151,152,152
 
+
+troop_old_xpos:
+        DEFB 0
+troop_old_ypos:
+        DEFB 0
+troop_old_terrain:
+        DEFB 0
+
 text_unit_number:
         DEFB "Unit number ",0
 text_current_orders:

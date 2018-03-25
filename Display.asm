@@ -121,7 +121,7 @@ show_status:
         call output_map_cell_description
 
         call press_any_key
-        
+
         jp get_order_continue_no_pak
 
         ; Sets hl to the address of the weapon text
@@ -289,7 +289,6 @@ output_order_key:
 output_troop_text:
 
         ld hl,troop_type_offsets
-        add hl,de
         ld a,c
         sla a
         ld d,0
@@ -307,16 +306,7 @@ output_troop_text:
         ; x and y pos of the troop at ix
 output_map_cell_description:
 
-        ld d,(ix+troopdata_ypos)
-        ld e,30
-        call Multiply
-        ld d,0
-        ld e,(ix+troopdata_xpos)
-        add hl,de
-        ld d,h
-        ld e,l
-        ld hl,map
-        add hl,de
+        call get_map_cell_in_hl
 
         push bc
 
