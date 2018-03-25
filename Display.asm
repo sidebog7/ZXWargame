@@ -228,8 +228,8 @@ output_order_direction:
         push bc
         ld a,(ix+troopdata_dir)
         ld b,a
-        sla a
-        sla a
+        rlca
+        rlca
         add a,b
         ld hl,text_direction
         ld b,0
@@ -253,7 +253,7 @@ output_troop_order_text:
         ; Destroys: a, de, hl
 output_order_text:
         ld hl,troop_order_offsets
-        sla a
+        rlca
         ld d,0
         ld e,a
         add hl,de
@@ -270,7 +270,7 @@ output_order_text:
         ; Destroys: a, de, hl
 output_order_key:
         ld hl,troop_order_offsets
-        sla a
+        rlca
         ld d,0
         ld e,a
         add hl,de

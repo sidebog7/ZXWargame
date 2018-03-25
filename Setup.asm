@@ -161,9 +161,9 @@ troops_deploy_loop:
 
 troops_output:
         ld a,c
-        sla a
-        sla a
-        sla a
+        rlca
+        rlca
+        rlca
         push bc
         push de
         ld b,8
