@@ -209,7 +209,7 @@ troop_choice:
         ld hl,troop_chars
         add hl,de
         ld a,(hl)
-        ;rst 16
+        rst 16
         pop de
 
         djnz troop_choice
