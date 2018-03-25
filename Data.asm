@@ -11,6 +11,12 @@ gfxshld DEFB 255,231,231,129,129,231,102,60
 gfxbow  DEFB 249,70,38,25,9,5,3,1
 gfxswd  DEFB 1,2,4,8,16,160,64,160
 
+terrain_blank   EQU 0
+terrain_house   EQU 1
+terrain_tree    EQU 2
+terrain_hill1   EQU 3
+terrain_hill2   EQU 4
+
 colscr  EQU 56
 colbdr  EQU 0
 
@@ -218,4 +224,6 @@ key_move    EQU 3
 key_status  EQU 4
 
 debug:
+        DEFW 0
+debugseed:
         DEFW 0
