@@ -1,6 +1,5 @@
 perform_move_order:
 
-        push de
         push hl
         push bc
         push ix
@@ -10,12 +9,14 @@ perform_move_order:
         ldir
         pop bc
         pop hl
-        pop de
 
         call get_map_cell_in_hl
 
         ld a,(hl)
         ld (troop_old_terrain),a
+
+
+
 
 
         ld a,c
@@ -26,7 +27,18 @@ perform_move_order:
         po_user_colour:
         ld (23695),a
 
-
+        call setxy_troop
+        ld a,c
+        cp 8
+        jr c,pmo_c_user_player
+        sub 8
+pmo_c_user_player
+        ld d,0
+        ld e,c
+        ld hl,troop_chars
+        add hl,de
+        ld a,(hl)
+        rst 16
 
         push ix
         ld ix,troop_old
