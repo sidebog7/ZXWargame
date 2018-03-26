@@ -82,7 +82,7 @@ po_order_loop:
 
         ld a,(ix+troopdata_order)
         cp key_status
-        jp p,po_order_loop_fin
+        jp p,po_continue_loop
 
         ld a,56
         ld (23695),a
@@ -114,14 +114,12 @@ po_troop_less_than_ten:
         jr z,perform_move_order
 
         cp key_halt
-        jr z,po_order_loop_fin
+        jr z,po_continue_loop
 
         jr perform_fight_order
 
 po_continue_loop:
 
-
-po_order_loop_fin:
         call press_any_key
         ld de,trooplen
         add ix,de

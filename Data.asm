@@ -56,6 +56,11 @@ troop_type_menatarms  EQU 2
 troop_type_archers    EQU 3
 troop_type_peasants   EQU 4
 
+troop_min_xpos        EQU 0
+troop_max_xpos        EQU 29
+troop_min_ypos        EQU 0
+troop_max_ypos        EQU 15
+
 troop_types:
         DEFB troop_type_knight
         DEFB troop_type_sergeant

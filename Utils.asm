@@ -176,6 +176,7 @@ gyon_fin:
         ; b = xpos
         ; c = ypos
 get_map_cell_in_hl_from_bc:
+        push de
         ld d,c
         ld e,30
         call Multiply
@@ -186,7 +187,7 @@ get_map_cell_in_hl_from_bc:
         ld e,l
         ld hl,map
         add hl,de
-
+        pop de
         ret
 
 
