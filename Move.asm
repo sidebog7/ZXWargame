@@ -109,7 +109,7 @@ pmo_move_get_max_distance:
         cp troop_type_knight
         jr z,pmo_mgmd_mounted
         cp troop_type_sergeant
-        jr nz,pmo_mgmd_mounted
+        jr z,pmo_mgmd_mounted
         ret
 pmo_mgmd_mounted:
         inc d
