@@ -30,14 +30,23 @@ setxy   ld a,22
 random:
         ld hl,(seed)
         ld a,h
-        and 31
+        rra
+        ld a,l
+        rra
+        xor h
         ld h,a
-        ld a,(hl)
-        inc hl
+        ld a,l
+        rra
+        ld a,h
+        rra
+        xor l
+        ld l,a
+        xor h
+        ld h,a
         ld (seed),hl
         ret
 seed:
-        DEFW 0
+        DEFW 15
 
         ; Returns random number in a
         ; Number will be between 1 and d
