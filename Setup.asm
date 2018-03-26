@@ -103,7 +103,9 @@ terrain_row_fin:
 troops_init:
         ld ix,troops
         ld c,15
+        push iy
 troop_start_loop:
+        ld iy,troop_types
         ld hl,troop_data
         ld b,8
 troop_loop:
@@ -142,10 +144,13 @@ troop_loop:
         ld (ix+troopdata_str_orig),h
         ld (ix+troopdata_str_orig+1),l
         ld (ix+troopdata_ypos),c
+        ld a,(iy)
+        ld (ix+troopdata_type), a
         pop hl
         ld d,0
         ld e,trooplen
         add ix,de
+        inc iy
         djnz troop_loop
 
         ld a,c
@@ -153,6 +158,7 @@ troop_loop:
         ld c,a
         jr z,troop_start_loop
 
+        pop iy
         ret
 
 

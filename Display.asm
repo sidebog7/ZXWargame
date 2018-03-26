@@ -289,7 +289,7 @@ output_order_key:
 output_troop_text:
 
         ld hl,troop_type_offsets
-        ld a,c
+        ld a,(ix+troopdata_type)
         sla a
         ld d,0
         ld e,a

@@ -86,16 +86,15 @@ select_action:
         ld hl,text_options_are
         call text_output
 
-        ld a,c
+
 
         push bc
 
         ld b,4
         ld c,0
 
-        cp 4
-        jr z,select_action_output
-        cp 5
+        ld a,(ix+troopdata_type)
+        cp troop_type_archers
         jr z,select_action_output
         inc c
         dec b
@@ -212,17 +211,13 @@ gdk_fin:
         ; 3 - h
         ; 4 - m
 get_order_key:
-        push de
-        ld d,c
         push bc
 gok_loop:
         ld bc,65022
         in c,(c)
 
-        ld a,d
-        cp 5
-        jr z,gok_check_f
-        cp 4
+        ld a,(ix+troopdata_type)
+        cp troop_type_archers
         jr z,gok_check_f
         jr gok_ignore_f
 
@@ -260,6 +255,5 @@ gok_press_s:
 
 gok_fin:
         pop bc
-        pop de
 
         ret

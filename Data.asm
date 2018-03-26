@@ -29,10 +29,9 @@ terrain_colour_hill2    DEFB  %00111101
 colscr  EQU 56
 colbdr  EQU 0
 
-        org 50000
 map:
         DEFS 30*16,0
-trooplen EQU 11
+trooplen EQU 12
 troops:
 user_troops:
         DEFS trooplen*8,0
@@ -40,15 +39,32 @@ comp_troops:
         DEFS trooplen*8,0
 
 
-troopdata_order EQU 0
-troopdata_dir EQU 1
-troopdata_weapon EQU 2
-troopdata_armour EQU 3
-troopdata_morale EQU 4
-troopdata_str EQU 5
-troopdata_str_orig EQU 7
-troopdata_ypos EQU 9
-troopdata_xpos EQU 10
+troopdata_order     EQU 0
+troopdata_dir       EQU 1
+troopdata_weapon    EQU 2
+troopdata_armour    EQU 3
+troopdata_morale    EQU 4
+troopdata_str       EQU 5
+troopdata_str_orig  EQU 7
+troopdata_ypos      EQU 9
+troopdata_xpos      EQU 10
+troopdata_type      EQU 11
+
+troop_type_knight     EQU 0
+troop_type_sergeant   EQU 1
+troop_type_menatarms  EQU 2
+troop_type_archers    EQU 3
+troop_type_peasants   EQU 4
+
+troop_types:
+        DEFB troop_type_knight
+        DEFB troop_type_sergeant
+        DEFB troop_type_menatarms
+        DEFB troop_type_menatarms
+        DEFB troop_type_archers
+        DEFB troop_type_archers
+        DEFB troop_type_peasants
+        DEFB troop_type_peasants
 
 ; troops 0-7  Blue
 ; troops 8-15 Red
@@ -201,21 +217,15 @@ text_press_enter:
         DEFB "(PRESS ENTER)",0
 
 troop_type_offsets:
-troop_type_1:
+troop_type_0:
         DEFW text_unit_knights-text_unit
-troop_type_2:
+troop_type_1:
         DEFW text_unit_sergeants-text_unit
+troop_type_2:
+        DEFW text_unit_menatarms-text_unit
 troop_type_3:
-        DEFW text_unit_menatarms-text_unit
+        DEFW text_unit_archers-text_unit
 troop_type_4:
-        DEFW text_unit_menatarms-text_unit
-troop_type_5:
-        DEFW text_unit_archers-text_unit
-troop_type_6:
-        DEFW text_unit_archers-text_unit
-troop_type_7:
-        DEFW text_unit_peasants-text_unit
-troop_type_8:
         DEFW text_unit_peasants-text_unit
 
 troop_order_offsets:
