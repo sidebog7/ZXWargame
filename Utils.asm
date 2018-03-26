@@ -172,19 +172,30 @@ gyon_fin:
         pop bc
         ret
 
-
-get_map_cell_in_hl:
-        ld d,(ix+troopdata_ypos)
+        ; Returns in hl the map cell
+        ; b = xpos
+        ; c = ypos
+get_map_cell_in_hl_from_bc:
+        ld d,c
         ld e,30
         call Multiply
         ld d,0
-        ld e,(ix+troopdata_xpos)
+        ld e,b
         add hl,de
         ld d,h
         ld e,l
         ld hl,map
         add hl,de
 
+        ret
+
+
+get_map_cell_in_hl:
+        push bc
+        ld c,(ix+troopdata_ypos)
+        ld b,(ix+troop_max_xpos)
+        call get_map_cell_in_hl_from_bc
+        pop bc
         ret
 
 setxy_troop:
