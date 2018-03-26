@@ -128,9 +128,8 @@ press_any_key:
         ld bc,49150
 pak_loop:
         in a,(c)
-        and 1
-        cp 1
-        jr z,pak_loop
+        rra
+        jr c,pak_loop
         pop bc
         ret
 
@@ -161,14 +160,12 @@ gyon_loop:
         ld bc,57342
         in a,(c)
         and 16
-        cp 16
-        jr nz,press_y
+        jr z,press_y
 
         ld bc,32766
         in a,(c)
         and 8
-        cp 8
-        jr nz,press_n
+        jr z,press_n
 
         jr gyon_loop
 press_y:

@@ -130,17 +130,15 @@ show_status:
 get_weapon_hl:
 
         ld a,b
-        cp 0
+        or a
         jr z,gwi_noloop
         xor a
 gwi_loop:
         add a,text_weapon_length
         djnz gwi_loop
 gwi_noloop:
-        ld b,0
-        ld c,a
         ld hl,text_weapon
-        add hl,bc
+        ADD_A_TO_HL
         ret
 
         ; Sets hl to the address of the armour text
@@ -149,17 +147,15 @@ gwi_noloop:
 get_armour_hl:
 
         ld a,b
-        cp 0
+        or a
         jr z,gai_noloop
         xor a
 gai_loop:
         add a,text_armour_length
         djnz gai_loop
 gai_noloop:
-        ld b,0
-        ld c,a
         ld hl,text_armour
-        add hl,bc
+        ADD_A_TO_HL
         ret
 
         ; Sets hl to the address of the morale text
@@ -168,17 +164,15 @@ gai_noloop:
 get_morale_hl:
 
         ld a,b
-        cp 0
+        or a
         jr z,gmi_noloop
         xor a
 gmi_loop:
         add a,text_morale_length
         djnz gmi_loop
 gmi_noloop:
-        ld b,0
-        ld c,a
         ld hl,text_morale
-        add hl,bc
+        ADD_A_TO_HL
         ret
 
 
@@ -232,9 +226,7 @@ output_order_direction:
         rlca
         add a,b
         ld hl,text_direction
-        ld b,0
-        ld c,a
-        add hl,bc
+        ADD_A_TO_HL
         ld b,5
         call text_output_b_chars
         pop bc
@@ -254,9 +246,7 @@ output_troop_order_text:
 output_order_text:
         ld hl,troop_order_offsets
         rlca
-        ld d,0
-        ld e,a
-        add hl,de
+        ADD_A_TO_HL
         ld e,(hl)
         inc hl
         ld d,(hl)
@@ -271,9 +261,7 @@ output_order_text:
 output_order_key:
         ld hl,troop_order_offsets
         rlca
-        ld d,0
-        ld e,a
-        add hl,de
+        ADD_A_TO_HL
         ld e,(hl)
         inc hl
         ld d,(hl)
@@ -291,9 +279,7 @@ output_troop_text:
         ld hl,troop_type_offsets
         ld a,(ix+troopdata_type)
         sla a
-        ld d,0
-        ld e,a
-        add hl,de
+        ADD_A_TO_HL
         ld e,(hl)
         inc hl
         ld d,(hl)
@@ -333,17 +319,15 @@ output_description_text:
         ; Destroys: a, bc, ix
 get_description_hl:
         ld a,b
-        cp 0
+        or a
         jr z,gdi_noloop
         xor a
 gdi_loop:
         add a,text_terrain_length
         djnz gdi_loop
 gdi_noloop:
-        ld b,0
-        ld c,a
         ld hl,text_terrain
-        add hl,bc
+        ADD_A_TO_HL
         ret
 
 

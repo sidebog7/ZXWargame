@@ -1,3 +1,5 @@
+include "Macro.asm"
+
         org 40000
 
 begin:

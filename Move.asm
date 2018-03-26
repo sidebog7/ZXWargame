@@ -29,19 +29,19 @@ pmo_move_loop:
         call get_map_cell_in_hl_from_bc
 
         ld a,(hl)
-        cp 0
+        or a
         jr z,pmo_move_blank_terrain
         dec d
 
 pmo_move_blank_terrain:
         ld a,d
-        cp 0
+        or a
         jr z,pmo_finished_moving
 
         call pmo_move_check_collisions
 
         ld a,d
-        cp 0
+        or a
         jr z,pmo_finished_moving
 
         ld (ix+troopdata_xpos),b
@@ -92,8 +92,8 @@ pmo_setup_new_position:
         ; np = e
         ld e,a
 
-        push de
-        pop bc
+        ld b,d
+        ld c,e
 
         pop de
 
@@ -139,8 +139,8 @@ pmo_move_check_collisions:
 
         push de
         push bc
-        push bc
-        pop de              ; copy bc into de
+        ld d,b
+        ld e,c                ; copy bc into de
         ld hl,user_troops
         ld b,8
 pmo_move_check_user_troops:
@@ -272,7 +272,7 @@ get_terrain_data:
         ld (23695),a
         pop af
 
-        cp 0
+        or a
         jr z,gtd_blank
         add a,143
         jr gtd_continue

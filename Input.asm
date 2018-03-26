@@ -52,7 +52,7 @@ get_order_no_move:
 
         call get_y_or_n
 
-        cp 1
+        dec a
         jr nz,get_order_continue
 
         jr select_action

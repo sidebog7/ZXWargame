@@ -130,15 +130,13 @@ troop_loop:
         push hl
         ld h,0
         ld l,a
-        ld d,0
-        ld e,a
         add hl,hl
         add hl,hl
         add hl,hl
-        add hl,de
-        add hl,de
-        ld e,10
-        add hl,de
+        ADD_A_TO_HL
+        ADD_A_TO_HL
+        ld a,10
+        ADD_A_TO_HL
         ld (ix+troopdata_str),h
         ld (ix+troopdata_str+1),l
         ld (ix+troopdata_str_orig),h
