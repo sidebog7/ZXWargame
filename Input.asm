@@ -188,16 +188,16 @@ gdk_loop:
         jr gdk_loop
 
 gdk_n:
-        ld a,1
+        ld a,direction_north
         jr gdk_fin
 gdk_s:
-        ld a,3
+        ld a,direction_south
         jr gdk_fin
 gdk_e:
-        ld a,4
+        ld a,direction_east
         jr gdk_fin
 gdk_w:
-        ld a,2
+        ld a,direction_west
 gdk_fin:
 
         pop bc

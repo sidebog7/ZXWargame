@@ -89,6 +89,11 @@ troop_data:
         DEFB 2,1,-1
         DEFB 2,0,-1
 
+direction_north   EQU 1
+direction_west    EQU 2
+direction_south   EQU 3
+direction_east    EQU 4
+
 troop_chars:
         DEFB 148,149,150,150,151,151,152,152
 
