@@ -314,6 +314,21 @@ output_description_text:
         call text_output_b_chars
         ret
 
+        ; Outputs the number 1 through 16
+        ; Number to print out is passed in c
+output_troop_number:
+
+        ld a,c
+        cp 9
+        ld a,49
+        jr c,po_troop_less_than_ten
+        rst 16
+        ld a,39
+po_troop_less_than_ten:
+        add a,c
+        rst 16
+        ret
+
         ; Retrieves the address for text for terrain
         ; number b into ix
         ; Destroys: a, bc, ix

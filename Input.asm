@@ -21,9 +21,7 @@ get_order:
         call setxy
         ld hl,text_unit_number
         call text_output
-        ld a,49
-        add a,c
-        rst 16
+        call output_troop_number
         ld a,32
         rst 16
 

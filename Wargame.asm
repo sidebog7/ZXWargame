@@ -96,16 +96,7 @@ po_order_loop:
         ld hl,text_unit_word
         call text_output
 
-        ld a,c
-        cp 9
-        ld a,49
-        jr c,po_troop_less_than_ten
-        ld a,49
-        rst 16
-        ld a,39
-po_troop_less_than_ten:
-        add a,c
-        rst 16
+        call output_troop_number
 
         ld hl,text_decides_to_act
         call text_output
