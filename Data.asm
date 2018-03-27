@@ -31,14 +31,8 @@ colbdr  EQU 0
 
 map:
         DEFS 30*16,0
+
 trooplen EQU 12
-troops:
-user_troops:
-        DEFS trooplen*8,0
-comp_troops:
-        DEFS trooplen*8,0
-
-
 troopdata_order     EQU 0
 troopdata_dir       EQU 1
 troopdata_weapon    EQU 2
@@ -49,6 +43,12 @@ troopdata_str_orig  EQU 7
 troopdata_ypos      EQU 9
 troopdata_xpos      EQU 10
 troopdata_type      EQU 11
+
+troops:
+user_troops:
+        DEFS trooplen*8,0
+comp_troops:
+        DEFS trooplen*8,0
 
 troop_type_knight     EQU 0
 troop_type_sergeant   EQU 1
