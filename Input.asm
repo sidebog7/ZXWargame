@@ -33,7 +33,8 @@ get_order:
         ld hl,text_current_orders
         call text_output
 
-        call output_order_text
+        call output_troop_order_text
+
         ld a,(ix+troopdata_order)
         cp 3
         jr nz,get_order_no_move
