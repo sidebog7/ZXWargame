@@ -106,6 +106,8 @@ po_order_loop:
         ld hl,text_decides_to_act
         call text_output
 
+        call output_order_information
+
         ld a,(ix+troopdata_order)
 
         cp key_move

@@ -221,6 +221,7 @@ output_order_direction:
         rst 16
         push bc
         ld a,(ix+troopdata_dir)
+        dec a
         ld b,a
         rlca
         rlca
@@ -327,6 +328,23 @@ output_troop_number:
 po_troop_less_than_ten:
         add a,c
         rst 16
+        ret
+
+output_order_information:
+        ld d,text_row2
+        ld e,0
+        call setxy
+        ld hl,text_current_orders
+        call text_output
+
+        call output_troop_order_text
+
+        ld a,(ix+troopdata_order)
+        cp key_move
+        jr nz,ooi_no_move
+
+        call output_order_direction
+ooi_no_move:
         ret
 
         ; Retrieves the address for text for terrain

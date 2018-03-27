@@ -27,21 +27,8 @@ get_order:
 
         call output_troop_text
 
-        ld d,text_row2
-        ld e,0
-        call setxy
-        ld hl,text_current_orders
-        call text_output
+        call output_order_information
 
-        call output_troop_order_text
-
-        ld a,(ix+troopdata_order)
-        cp key_move
-        jr nz,get_order_no_move
-
-        call output_order_direction
-
-get_order_no_move:
 
         ld d,text_row3
         ld e,0
