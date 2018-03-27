@@ -74,15 +74,16 @@ troop_types:
 ; troops 0-7  Blue
 ; troops 8-15 Red
 ; troops structure
-; 0   - current order         - byte
-; 1   - current direction     - byte
-; 2   - weaponry              - byte
-; 3   - armour                - byte
-; 4   - morale                - byte
-; 5   - initial strength      - word
-; 7   - current strength      - word
-; 9   - Y Position            - byte
-; 10  - X Position            - byte
+; 0   - current order         - byte    -       1
+; 1   - current direction     - byte    -       2
+; 2   - weaponry              - byte    -       3
+; 3   - armour                - byte    -       4
+; 4   - morale                - byte    -       5
+; 5   - initial strength      - word    -       6
+; 7   - current strength      - word    -       7
+; 9   - Y Position            - byte    -       8
+; 10  - X Position            - byte    -       9
+; 11  - Type                  - byte
 
 troop_data:
         DEFB 4,3,2
