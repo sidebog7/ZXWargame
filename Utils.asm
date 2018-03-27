@@ -27,26 +27,7 @@ setxy   ld a,22
         rst 16
         ret
 
-random:
-        ld hl,(seed)
-        ld a,h
-        rra
-        ld a,l
-        rra
-        xor h
-        ld h,a
-        ld a,l
-        rra
-        ld a,h
-        rra
-        xor l
-        ld l,a
-        xor h
-        ld h,a
-        ld (seed),hl
-        ret
-seed:
-        DEFW 15
+include 'util/Random.asm'
 
         ; Returns random number in a
         ; Number will be between 1 and d
@@ -66,7 +47,11 @@ random_num:
         ld a,d
         sub e
         ld c,d
-        call random
+        push bc
+        push de
+        call rnd
+        pop de
+        pop bc
         ld l,a
         ld h,0
 mod_loop:
