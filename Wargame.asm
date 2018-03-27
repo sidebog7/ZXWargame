@@ -63,8 +63,13 @@ after_order:
         ld c,8
 game_comp_loop:
 
+        ld a,(ix+0)
+        cp 3
+        jr nc,after_comp_order
 
+        call decide_comp_move
 
+after_comp_order:
         ld de,trooplen
         add ix,de
         inc c
