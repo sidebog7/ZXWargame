@@ -225,6 +225,7 @@ text_direction_east:
 
 text_press_enter:
         DEFB "(PRESS ENTER)",0
+text_press_enter_length EQU $-text_press_enter-1
 
 troop_type_offsets:
 troop_type_0:

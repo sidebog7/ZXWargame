@@ -77,8 +77,7 @@ terrain_output:
         push hl
 
         ld hl,terrain_colours
-        add a,l
-        ld l,a
+        ADD_A_TO_HL
         ld a,(hl)
         ld (23695),a
 

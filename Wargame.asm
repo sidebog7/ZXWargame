@@ -1,6 +1,6 @@
 include "Macro.asm"
 
-        org 40000
+        org 0x8000
 
 begin:
         di

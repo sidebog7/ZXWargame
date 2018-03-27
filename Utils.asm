@@ -114,22 +114,46 @@ divide_loop:
         ret
 
 press_any_key:
-        ld a,56
-        ld (23695),a
+        ;ld a,56
+        ;ld (23695),a
+        push bc
         push de
-        ld d,21
+        ld a,1              ; lower screen
+        call 5633
+        ld a,17
+        rst 16
+        ld a,7
+        rst 16
+        ld a,16
+        rst 16
+        ld a,0
+        rst 16
+
+        ld d,0
         ld e,9
         ld hl,text_press_enter
         call setxy
         call text_output
-        pop de
 
-        push bc
         ld bc,49150
 pak_loop:
         in a,(c)
         rra
         jr c,pak_loop
+
+        ld d,0
+        ld e,9
+        call setxy
+
+        ld b,text_press_enter_length
+pak_clear_loop:
+        ld a,32
+        rst 16
+        djnz pak_clear_loop
+
+        ld a,2              ; upper screen
+        call 5633
+        pop de
         pop bc
         ret
 
