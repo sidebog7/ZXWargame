@@ -252,10 +252,11 @@ troop_order_3:
 troop_order_4:
         DEFW text_order_rout-text_order
 
-key_fight   EQU 1
-key_halt    EQU 2
-key_move    EQU 3
-key_status  EQU 4
+key_fire        EQU 0
+key_halt        EQU 1
+key_move        EQU 2
+key_status      EQU 3
+key_rout        EQU 4
 
 debug:
         DEFW 0

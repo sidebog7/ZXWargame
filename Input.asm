@@ -36,7 +36,7 @@ get_order:
         call output_troop_order_text
 
         ld a,(ix+troopdata_order)
-        cp 3
+        cp key_move
         jr nz,get_order_no_move
 
         call output_order_direction
@@ -241,7 +241,7 @@ gok_ignore_f:
 
         jr gok_loop
 gok_press_f:
-        ld a,key_fight
+        ld a,key_fire
         jr gok_fin
 gok_press_h:
         ld a,key_halt

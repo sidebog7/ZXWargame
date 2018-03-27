@@ -108,8 +108,8 @@ troop_start_loop:
         ld hl,troop_data
         ld b,8
 troop_loop:
-        ld (ix+troopdata_order),1
-        ld (ix+troopdata_dir),1
+        ld (ix+troopdata_order),key_halt
+        ld (ix+troopdata_dir),direction_north
         ld a,(hl)
         ld (ix+troopdata_weapon),a
         inc hl

@@ -109,7 +109,8 @@ po_order_loop:
         cp key_halt
         jr z,po_continue_loop
 
-        jr perform_fight_order
+        cp key_fire
+        jr z,perform_fire_order
 
 po_continue_loop:
 
@@ -122,7 +123,7 @@ po_continue_loop:
         ret
 
 
-perform_fight_order:
+perform_fire_order:
 
         jr po_continue_loop
 
