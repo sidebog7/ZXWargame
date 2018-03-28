@@ -347,6 +347,42 @@ output_order_information:
 ooi_no_move:
         ret
 
+
+output_troop_after_move:
+
+        push ix
+        ld ix,troop_old
+
+        call setxy_troop
+        ld a,(troop_old_terrain)
+        call get_terrain_data
+        rst 16
+        pop ix
+
+        ld a,c
+        cp 8
+        ld a,58
+        jr c,po_user_colour
+        dec a
+        po_user_colour:
+        ld (23695),a
+
+        call setxy_troop
+        ld a,c
+        cp 8
+        jr c,pmo_c_user_player
+        sub 8
+pmo_c_user_player:
+
+        ld hl,troop_chars
+        ADD_A_TO_HL
+        ld a,(hl)
+        rst 16
+
+
+
+        ret
+
         ; Retrieves the address for text for terrain
         ; number b into ix
         ; Destroys: a, bc, ix

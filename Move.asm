@@ -223,42 +223,6 @@ pmo_move_pos_max:
 pmo_accept_pos:
         ret
 
-output_troop_after_move:
-
-        push ix
-        ld ix,troop_old
-
-        call setxy_troop
-        ld a,(troop_old_terrain)
-        call get_terrain_data
-        rst 16
-
-        pop ix
-
-        ld a,c
-        cp 8
-        ld a,58
-        jr c,po_user_colour
-        dec a
-        po_user_colour:
-        ld (23695),a
-
-        call setxy_troop
-        ld a,c
-        cp 8
-        jr c,pmo_c_user_player
-        sub 8
-pmo_c_user_player:
-        ld d,0
-        ld e,c
-        ld hl,troop_chars
-        add hl,de
-        ld a,(hl)
-        rst 16
-
-
-
-        ret
 
         ; Returns in a the tile to draw
         ; Sets the temporary colour to the relevant colour
