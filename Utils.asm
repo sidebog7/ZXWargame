@@ -68,11 +68,12 @@ mod_loop:
         ret
 
 Multiply:   ; this routine performs the operation HL=D*E
-        push bc
+
         ld hl,0                        ; HL is used to accumulate the result
         ld a,d                         ; checking one of the factors; returning if it is zero
         or a
         ret z
+        push bc
         ld b,d                         ; one factor is in B
         ld d,h                         ; clearing D (H is zero), so DE holds the other factor
 MulLoop:                         ; adding DE to HL exactly B times
@@ -209,7 +210,7 @@ get_map_cell_in_hl_from_bc:
 get_map_cell_in_hl:
         push bc
         ld c,(ix+troopdata_ypos)
-        ld b,(ix+troop_max_xpos)
+        ld b,(ix+troopdata_xpos)
         call get_map_cell_in_hl_from_bc
         pop bc
         ret
