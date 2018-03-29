@@ -67,18 +67,24 @@ mod_loop:
         pop bc
         ret
 
-Multiply:   ; this routine performs the operation HL=D*E
 
-        ld hl,0                        ; HL is used to accumulate the result
-        ld a,d                         ; checking one of the factors; returning if it is zero
-        or a
-        ret z
+
+Multiply:
         push bc
-        ld b,d                         ; one factor is in B
-        ld d,h                         ; clearing D (H is zero), so DE holds the other factor
-MulLoop:                         ; adding DE to HL exactly B times
-        add hl,de
-        djnz MulLoop
+        ld a,e              ; make accumulator first multiplier.
+        ld e,d              ; HL = H * D
+        ld hl,0             ; zeroise total.
+        ld d,h              ; zeroise high byte so de=multiplier.
+        ld b,8              ; repeat 8 times.
+imul1:
+        rra                 ; rotate rightmost bit into carry.
+        jr nc,imul2         ; wasn't set.
+        add hl,de           ; bit was set, so add de.
+        and a               ; reset carry.
+imul2:
+        rl e                ; shift de 1 bit left.
+        rl d
+        djnz imul1          ; repeat 8 times.
         pop bc
         ret
 
