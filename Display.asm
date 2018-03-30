@@ -34,30 +34,64 @@ border_row_fin:
 border_fin:
         ret
 
+
         ; Clears the lower pane
         ; Destroys: a
 clear_textarea:
-        push de
-        push bc
-        ld a,56
-        ld (23695),a
-        ld b,4
-        ld d,text_row1
-        ld e,0
-        call setxy
-clear_loop1:
-        push bc
-        ld b,32
-clear_loop2:
-        ld a,32
-        rst 16
-        djnz clear_loop2
-        pop bc
-        djnz clear_loop1
-        pop bc
-        pop de
-        ret
 
+        push hl
+        push bc
+        push de
+
+        ld hl,$5040
+        ld d,h
+        ld e,l
+        ld c,6*8
+cta_loop:
+        ld b,4
+cta_row_loop:
+
+        ld (hl),0
+        inc l
+        ld (hl),0
+        inc l
+        ld (hl),0
+        inc l
+        ld (hl),0
+        inc l
+        ld (hl),0
+        inc l
+        ld (hl),0
+        inc l
+        ld (hl),0
+        inc l
+        ld (hl),0
+        inc hl
+
+        djnz cta_row_loop
+
+        inc d
+        ld a,d
+        and 7
+        jr nz,cta_next_line
+        ld a,e
+        add a,32
+        ld e,a
+        jr c,cta_next_line
+        ld a,d
+        sub 8
+        ld d,a
+
+
+cta_next_line:
+        ld h,d
+        ld l,e
+        dec c
+        jr nz,cta_loop
+        pop de
+        pop bc
+        pop hl
+        ret
 
         ; Shows the status display in the lower pane
         ; Destroys: a, de, hl
