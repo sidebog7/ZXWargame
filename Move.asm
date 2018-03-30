@@ -58,7 +58,7 @@ pmo_finished_moving:
 
         call output_troop_after_move
 
-        jr po_continue_loop
+        jp po_continue_loop
 
 
 
@@ -157,8 +157,7 @@ pmo_move_check_user_troops:
 
 pmo_mcc_next_user_troop:
         push de
-        ld d,0
-        ld e,trooplen
+        ld de,trooplen
         add hl,de
         pop de
 

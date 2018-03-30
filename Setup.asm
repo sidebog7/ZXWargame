@@ -144,8 +144,7 @@ troop_loop:
         ld a,(iy)
         ld (ix+troopdata_type), a
         pop hl
-        ld d,0
-        ld e,trooplen
+        ld de,trooplen
         add ix,de
         inc iy
         djnz troop_loop

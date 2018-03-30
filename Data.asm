@@ -129,8 +129,14 @@ text_which_way:
 text_decides_to_act:
         DEFB " decides to act",0
 
+text_nothing_in_range:
+        DEFB "Nothing in range",0
+
+text_fires:
+        DEFB " fires",0
+
 text_unit_word:
-        DEFB "UNIT ",0
+        DEFB "Unit ",0
 text_unit_weapon:
         DEFB "Weapon: ",0
 text_unit_armour:

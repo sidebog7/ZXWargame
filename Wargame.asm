@@ -111,7 +111,7 @@ po_order_loop:
         ld a,(ix+troopdata_order)
 
         cp key_move
-        jr z,perform_move_order
+        jp z,perform_move_order
 
         cp key_halt
         jr z,po_continue_loop
@@ -130,13 +130,11 @@ po_continue_loop:
         ret
 
 
-perform_fire_order:
-
-        jr po_continue_loop
 
 
 
 
+        include 'Fire.asm'
         include 'Move.asm'
         include 'Setup.asm'
         include 'Input.asm'
