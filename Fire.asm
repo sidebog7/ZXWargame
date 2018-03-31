@@ -83,6 +83,57 @@ pmo_next_troop:
 
         jr z,pmo_nothing_in_range
 
+        ld a,(data_closest_troop_ydiff)
+        ld d,a
+        ld a,(data_closest_troop_xdiff)
+        sub d
+        cp 0
+        jp p,pmo_diff_not_neg
+        neg
+pmo_diff_not_neg:
+        ld d,a
+
+        ld a,8
+        push hl
+        pop iy
+        sub (iy+troopdata_armour)
+        sub d
+        ld d,a
+
+        ld a,(iy+troopdata_type)
+        cp troop_type_menatarms
+        jr c,pmo_target_not_knight_or_sergeant
+        inc d
+
+pmo_target_not_knight_or_sergeant:
+
+        ld b,(iy+troopdata_xpos)
+        ld c,(iy+troopdata_ypos)
+        call get_map_cell_in_hl_from_bc
+        ld a,(hl)
+        cp terrain_hill1
+        jr nz,pmo_target_not_on_hill
+        cp terrain_hill2
+        jr nz,pmo_target_not_on_hill
+        dec d
+        dec d
+pmo_target_not_on_hill:
+
+        ld a,(iy+troopdata_order)
+        cp key_halt
+        jr z,pmo_troop_not_halted
+        inc d
+pmo_troop_not_halted:
+
+        push de
+        ld d,(ix+troopdata_str)
+        ld e,40
+        call divide_d_e
+        ld a,d
+        pop de
+        add a,d
+        ld d,a
+
 pmo_finished_firing:
         pop bc
         pop iy

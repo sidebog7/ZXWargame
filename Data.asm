@@ -38,8 +38,8 @@ troopdata_dir       EQU 1
 troopdata_weapon    EQU 2
 troopdata_armour    EQU 3
 troopdata_morale    EQU 4
-troopdata_str       EQU 5
-troopdata_str_orig  EQU 7
+troopdata_str_orig  EQU 5
+troopdata_str       EQU 7
 troopdata_ypos      EQU 9
 troopdata_xpos      EQU 10
 troopdata_type      EQU 11
