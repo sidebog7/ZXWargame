@@ -81,7 +81,7 @@ pmo_next_troop:
         add a,l
         cp 0
 
-        jr z,pmo_nothing_in_range
+        jp z,pmo_nothing_in_range
 
         ld a,(data_closest_troop_ydiff)
         ld d,a
@@ -126,13 +126,47 @@ pmo_target_not_on_hill:
 pmo_troop_not_halted:
 
         push de
-        ld d,(ix+troopdata_str)
-        ld e,40
-        call divide_d_e
+        ld e,(ix+troopdata_str)
+        ld d,(ix+troopdata_str+1)
+        ld a,40
+        call divide_de_bc
         ld a,d
         pop de
         add a,d
         ld d,a
+
+        push de
+        ld d,3
+        call random_num_btwn_1_d
+        pop de
+        add a,d
+        push de
+        ld d,a
+        ld e,10
+        call Multiply
+        push hl
+        ld l,(iy+troopdata_str)
+        ld h,(iy+troopdata_str+1)
+        pop de
+        sbc hl,de
+        ld (iy+troopdata_str),l
+        ld (iy+troopdata_str+1),h
+        ld hl,text_that_causes
+        call text_output
+
+        ld h,d
+        ld l,e
+        call shwnum
+
+        ld hl,text_casualties
+        call text_output
+
+
+        pop de
+
+        call press_any_key
+
+        ; Morale Test
 
 pmo_finished_firing:
         pop bc

@@ -132,8 +132,8 @@ show_status:
         ld hl,text_unit_strength
         call text_output
 
-        ld h, (ix+troopdata_str)
-        ld l, (ix+troopdata_str+1)
+        ld l, (ix+troopdata_str)
+        ld h, (ix+troopdata_str+1)
         call shwnum
 
         ld e,14

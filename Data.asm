@@ -135,6 +135,11 @@ text_nothing_in_range:
 text_fires:
         DEFB " fires",0
 
+text_that_causes:
+        DEFB "That causes ",0
+text_casualties:
+        DEFB " casualties on unit ",0
+
 text_unit_word:
         DEFB "Unit ",0
 text_unit_weapon:

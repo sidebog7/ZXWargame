@@ -72,7 +72,7 @@ mod_loop:
 Multiply:
         push bc
         ld a,e              ; make accumulator first multiplier.
-        ld e,d              ; HL = H * D
+        ld e,d              ; HL = D * E
         ld hl,0             ; zeroise total.
         ld d,h              ; zeroise high byte so de=multiplier.
         ld b,8              ; repeat 8 times.
@@ -103,6 +103,11 @@ divide_loop:
 
         djnz divide_loop
         pop bc
+        ret
+
+divide_de_bc: ; this routine performs the operation BC=DE/A rem A
+
+
         ret
 
 press_any_key:

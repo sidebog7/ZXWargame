@@ -136,10 +136,10 @@ troop_loop:
         ADD_A_TO_HL
         ld a,10
         ADD_A_TO_HL
-        ld (ix+troopdata_str),h
-        ld (ix+troopdata_str+1),l
-        ld (ix+troopdata_str_orig),h
-        ld (ix+troopdata_str_orig+1),l
+        ld (ix+troopdata_str),l
+        ld (ix+troopdata_str+1),h
+        ld (ix+troopdata_str_orig),l
+        ld (ix+troopdata_str_orig+1),h
         ld (ix+troopdata_ypos),c
         ld a,(iy)
         ld (ix+troopdata_type), a
