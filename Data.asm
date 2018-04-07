@@ -11,6 +11,16 @@ gfxshld DEFB 255,231,231,129,129,231,102,60
 gfxbow  DEFB 249,70,38,25,9,5,3,1
 gfxswd  DEFB 1,2,4,8,16,160,64,160
 
+char_hse:       EQU 144
+char_tree:      EQU 145
+char_hill1:     EQU 146
+char_hill2:     EQU 147
+char_flag:      EQU 148
+char_mace:      EQU 149
+char_shld:      EQU 150
+char_bow:       EQU 151
+char_swd:       EQU 152
+
 terrain_blank   EQU 0
 terrain_house   EQU 1
 terrain_tree    EQU 2
@@ -101,7 +111,7 @@ direction_south   EQU 3
 direction_east    EQU 4
 
 troop_chars:
-        DEFB 148,149,150,150,151,151,152,152
+        DEFB char_flag,char_mace,char_shld,char_shld,char_bow,char_bow,char_swd,char_swd
 
 troop_old:
         DEFS trooplen,0

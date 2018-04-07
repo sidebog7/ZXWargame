@@ -27,6 +27,8 @@ setxy   ld a,22
         rst 16
         ret
 
+
+include 'util/Print.asm'
 include 'util/Random.asm'
 
         ; Returns random number in a
@@ -111,26 +113,15 @@ divide_de_bc: ; this routine performs the operation BC=DE/A rem A
         ret
 
 press_any_key:
-        ;ld a,56
-        ;ld (23695),a
+
+        push hl
         push bc
         push de
-        ld a,1              ; lower screen
-        call 5633
-        ld a,17
-        rst 16
-        ld a,7
-        rst 16
-        ld a,16
-        rst 16
-        ld a,0
-        rst 16
+        ld bc,$1609
+        call SETDRAWPOS
 
-        ld d,0
-        ld e,9
         ld hl,text_press_enter
-        call setxy
-        call text_output
+        call PRINTSTR
 
         ld bc,49150
 pak_loop:
@@ -138,21 +129,24 @@ pak_loop:
         rra
         jr c,pak_loop
 
-        ld d,0
-        ld e,9
-        call setxy
+        ld bc,$1609
+        call SETDRAWPOS
 
         ld b,text_press_enter_length
+
 pak_clear_loop:
+        push bc
         ld a,32
-        rst 16
+        call PRINTCHAR
+        pop bc
         djnz pak_clear_loop
 
-        ld a,2              ; upper screen
-        call 5633
+
         pop de
         pop bc
+        pop hl
         ret
+
 
 text_output:
         ld a,(hl)
