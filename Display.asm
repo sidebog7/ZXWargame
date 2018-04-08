@@ -3,29 +3,32 @@
         ; Destroys: a,bc,de
 border:
         ld a,56
-        ld (23695),a
+        ld (ATT),a
         ld b,17
 border_edge:
         ld d,b
         ld e,31
-        call setxy
-        ld a,150
-        rst 16
+        call SETDRAWPOS
+        ld a,char_shld
+        call PRINTUDG
+        ld d,b
         ld e,0
-        call setxy
-        ld a,150
-        rst 16
+        call SETDRAWPOS
+        ld a,char_shld
+        call PRINTUDG
         djnz border_edge
         ld d,17
 border_horizontal:
         ld e,0
-        call setxy
+        call SETDRAWPOS
+        push de
         ld b,32
 border_row:
-        ld a,150
-        rst 16
+        ld a,char_shld
+        call PRINTUDG
         djnz border_row
 border_row_fin:
+        pop de
         ld a,d
         or a
         jr z,border_fin   ; a = 0
@@ -100,47 +103,47 @@ show_status:
 
         ld e,0
         ld d,text_row1
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_word
-        call text_output
+        call PRINTSTR
 
         ld a,49
         add a,c
-        rst 16
+        call PRINTCHAR
 
 
 
         ld e,0
         ld d,text_row2
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_weapon
-        call text_output
+        call PRINTSTR
 
         call output_weapon_text
 
         ld e,15
         ld d,text_row2
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_armour
-        call text_output
+        call PRINTSTR
 
         call output_armour_text
 
         ld e,0
         ld d,text_row3
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_strength
-        call text_output
+        call PRINTSTR
 
         ld l, (ix+troopdata_str)
         ld h, (ix+troopdata_str+1)
-        call shwnum
+        call SHWNUM
 
         ld e,14
         ld d,text_row3
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_attitude
-        call text_output
+        call PRINTSTR
 
 
         call output_morale_text
@@ -148,9 +151,9 @@ show_status:
 
         ld e,0
         ld d,text_row4
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_location
-        call text_output
+        call PRINTSTR
 
         call output_map_cell_description
 
@@ -219,7 +222,7 @@ output_morale_text:
         call get_morale_hl
 
         ld b,text_morale_length
-        call text_output_b_chars
+        call PRINTBCHARS
         pop bc
         ret
 
@@ -231,7 +234,7 @@ output_armour_text:
         call get_armour_hl
 
         ld b,text_armour_length
-        call text_output_b_chars
+        call PRINTBCHARS
         pop bc
         ret
 
@@ -243,7 +246,7 @@ output_weapon_text:
         call get_weapon_hl
 
         ld b,text_weapon_length
-        call text_output_b_chars
+        call PRINTBCHARS
         pop bc
         ret
 
@@ -252,7 +255,7 @@ output_weapon_text:
         ; Destroys a
 output_order_direction:
         ld a,32
-        rst 16
+        call PRINTCHAR
         push bc
         ld a,(ix+troopdata_dir)
         dec a
@@ -263,7 +266,7 @@ output_order_direction:
         ld hl,text_direction
         ADD_A_TO_HL
         ld b,5
-        call text_output_b_chars
+        call PRINTBCHARS
         pop bc
         ret
 
@@ -287,7 +290,7 @@ output_order_text:
         ld d,(hl)
         ld hl,text_order
         add hl,de
-        call text_output
+        call PRINTSTR
         ret
 
         ; Outputs the relevant Order text for
@@ -303,7 +306,7 @@ output_order_key:
         ld hl,text_order
         add hl,de
         ld a,(hl)
-        rst 16
+        call PRINTCHAR
         ret
 
         ; Outputs the relevant Troop name for
@@ -320,7 +323,7 @@ output_troop_text:
         ld d,(hl)
         ld hl,text_unit
         add hl,de
-        call text_output
+        call PRINTSTR
         ret
 
         ; Outputs the terrain referenced at the
@@ -346,7 +349,7 @@ output_description_text:
         call get_description_hl
 
         ld b,text_terrain_length
-        call text_output_b_chars
+        call PRINTBCHARS
         ret
 
         ; Outputs the number 1 through 16
@@ -357,19 +360,19 @@ output_troop_number:
         cp 9
         ld a,49
         jr c,po_troop_less_than_ten
-        rst 16
+        call PRINTCHAR
         ld a,39
 po_troop_less_than_ten:
         add a,c
-        rst 16
+        call PRINTCHAR
         ret
 
 output_order_information:
         ld d,text_row2
         ld e,0
-        call setxy
+        call SETDRAWPOS
         ld hl,text_current_orders
-        call text_output
+        call PRINTSTR
 
         call output_troop_order_text
 
@@ -387,10 +390,10 @@ output_troop_after_move:
         push ix
         ld ix,troop_old
 
-        call setxy_troop
+        call SETTROOPDRAWPOS
         ld a,(troop_old_terrain)
         call get_terrain_data
-        rst 16
+        call PRINTUDG
         pop ix
 
         ld a,c
@@ -399,9 +402,9 @@ output_troop_after_move:
         jr c,po_user_colour
         dec a
         po_user_colour:
-        ld (23695),a
+        ld (ATT),a
 
-        call setxy_troop
+        call SETTROOPDRAWPOS
         ld a,c
         cp 8
         jr c,pmo_c_user_player
@@ -411,7 +414,7 @@ pmo_c_user_player:
         ld hl,troop_chars
         ADD_A_TO_HL
         ld a,(hl)
-        rst 16
+        call PRINTUDG
 
 
 

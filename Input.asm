@@ -2,28 +2,28 @@ get_order:
         call clear_textarea
 
         ld a,56+128
-        ld (23695),a
+        ld (ATT),a
 
-        call setxy_troop
+        call SETTROOPDRAWPOS
 
         ld d,0
         ld e,c
         ld hl,troop_chars
         add hl,de
         ld a,(hl)
-        rst 16
+        call PRINTUDG
 
         ld a,56
-        ld (23695),a
+        ld (ATT),a
 
         ld d,text_row1
         ld e,0
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_number
-        call text_output
+        call PRINTSTR
         call output_troop_number
         ld a,32
-        rst 16
+        call PRINTCHAR
 
         call output_troop_text
 
@@ -32,9 +32,9 @@ get_order:
 
         ld d,text_row3
         ld e,0
-        call setxy
+        call SETDRAWPOS
         ld hl,text_change_orders
-        call text_output
+        call PRINTSTR
 
         call get_y_or_n
 
@@ -49,16 +49,16 @@ get_order_continue:
 
 get_order_continue_no_pak:
         ld a,58
-        ld (23695),a
+        ld (ATT),a
 
-        call setxy_troop
+        call SETTROOPDRAWPOS
 
         ld d,0
         ld e,c
         ld hl,troop_chars
         add hl,de
         ld a,(hl)
-        rst 16
+        call PRINTUDG
 
         ret
 
@@ -68,9 +68,9 @@ select_action:
 
         ld d,text_row1
         ld e,0
-        call setxy
+        call SETDRAWPOS
         ld hl,text_options_are
-        call text_output
+        call PRINTSTR
 
 
 
@@ -91,16 +91,16 @@ select_action_output:
         add a,c
         ld d,a
         ld e,14
-        call setxy
+        call SETDRAWPOS
 
         ld a,c
         call output_order_key
         ld a,32
-        rst 16
+        call PRINTCHAR
         ld a,45
-        rst 16
+        call PRINTCHAR
         ld a,32
-        rst 16
+        call PRINTCHAR
         ld a,c
         call output_order_text
 
@@ -129,9 +129,9 @@ move_troop:
 
         ld d,text_row1
         ld e,0
-        call setxy
+        call SETDRAWPOS
         ld hl,text_which_way
-        call text_output
+        call PRINTSTR
 
         call get_direction_key
 

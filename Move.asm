@@ -232,16 +232,8 @@ get_terrain_data:
         add a,l
         ld l,a
         ld a,(hl)
-        ld (23695),a
+        ld (ATT),a
         pop af
-
-        or a
-        jr z,gtd_blank
-        add a,143
-        jr gtd_continue
-gtd_blank:
-        ld a,32
-gtd_continue:
 
         ret
 

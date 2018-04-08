@@ -1,32 +1,4 @@
 
-clrtxt  push de
-        ld a,56
-        ld (23695),a
-        ld b,5
-clrrep  ld a,16
-        add a,b
-        ld d,a
-        ld e,31
-clrrow  call setxy
-        ld a,' '
-        rst 16
-        dec e
-        jp m,clrnr
-        jr clrrow
-clrnr   djnz clrrep
-        pop de
-        ret
-
-        ; Sets the x position to e
-        ; Sets the y position to d
-setxy   ld a,22
-        rst 16
-        ld a,d
-        rst 16
-        ld a,e
-        rst 16
-        ret
-
 
 include 'util/Print.asm'
 include 'util/Random.asm'
@@ -114,10 +86,13 @@ divide_de_bc: ; this routine performs the operation BC=DE/A rem A
 
 press_any_key:
 
-        push hl
+        ld a,56
+        ld (ATT),a
+
         push bc
         push de
-        ld bc,$1609
+
+        ld de,$1609
         call SETDRAWPOS
 
         ld hl,text_press_enter
@@ -129,7 +104,7 @@ pak_loop:
         rra
         jr c,pak_loop
 
-        ld bc,$1609
+        ld de,$1609
         call SETDRAWPOS
 
         ld b,text_press_enter_length
@@ -141,32 +116,10 @@ pak_clear_loop:
         pop bc
         djnz pak_clear_loop
 
-
         pop de
         pop bc
-        pop hl
         ret
 
-
-text_output:
-        ld a,(hl)
-text_output_loop:
-        rst 16
-        inc hl
-        ld a,(hl)
-        or a
-
-        jr z,text_fin_output
-        jr text_output_loop
-text_fin_output:
-        ret
-
-text_output_b_chars:
-        ld a,(hl)
-        rst 16
-        inc hl
-        djnz text_output_b_chars
-        ret
 
 
 get_y_or_n:
@@ -218,41 +171,6 @@ get_map_cell_in_hl:
         ld b,(ix+troopdata_xpos)
         call get_map_cell_in_hl_from_bc
         pop bc
-        ret
-
-setxy_troop:
-        ld e,(ix+troopdata_xpos)
-        inc e
-        ld d,(ix+troopdata_ypos)
-        inc d
-        call setxy
-        ret
-
-; Show number passed in hl, right-justified.
-; Destroys: a, de
-shwnum:
-        ld a,48
-        ld de,1000
-        call shwdg
-        ld de,100
-        call shwdg
-        ld de,10
-        call shwdg
-        or 16
-        ld de,1
-shwdg:
-        and 48
-shwdg1:
-        sbc hl,de
-        jr c,shwdg0
-        or 16
-        inc a
-        jr shwdg1
-shwdg0:
-        add hl,de
-        push af
-        rst 16
-        pop af
         ret
 
 

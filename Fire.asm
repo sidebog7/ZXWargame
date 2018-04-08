@@ -1,15 +1,15 @@
 perform_fire_order:
 
         ld e,0
-        ld d,20
-        call setxy
+        ld d,18
+        call SETDRAWPOS
         ld hl,text_unit_word
-        call text_output
+        call PRINTSTR
 
         call output_troop_number
 
         ld hl,text_fires
-        call text_output
+        call PRINTSTR
 
         push iy
         ld iy,user_troops
@@ -151,15 +151,18 @@ pmo_troop_not_halted:
         sbc hl,de
         ld (iy+troopdata_str),l
         ld (iy+troopdata_str+1),h
+        ld e,0
+        ld d,18
+        call SETDRAWPOS
         ld hl,text_that_causes
-        call text_output
+        call PRINTSTR
 
         ld h,d
         ld l,e
-        call shwnum
+        call SHWNUM
 
         ld hl,text_casualties
-        call text_output
+        call PRINTSTR
 
 
         pop de
@@ -176,9 +179,9 @@ pmo_finished_firing:
 pmo_nothing_in_range:
         ld d,21
         ld e,0
-        call setxy
+        call SETDRAWPOS
         ld hl,text_nothing_in_range
-        call text_output
+        call PRINTSTR
 
 
         jr pmo_finished_firing

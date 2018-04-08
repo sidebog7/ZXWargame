@@ -91,20 +91,18 @@ po_order_loop:
         cp key_status
         jp p,po_continue_loop
 
-        ld a,56
-        ld (23695),a
         call clear_textarea
 
         ld e,0
         ld d,text_row1
-        call setxy
+        call SETDRAWPOS
         ld hl,text_unit_word
-        call text_output
+        call PRINTSTR
 
         call output_troop_number
 
         ld hl,text_decides_to_act
-        call text_output
+        call PRINTSTR
 
         call output_order_information
 

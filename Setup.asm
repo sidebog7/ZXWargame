@@ -79,14 +79,16 @@ terrain_output:
         ld hl,terrain_colours
         ADD_A_TO_HL
         ld a,(hl)
-        ld (23695),a
+        ld (ATT),a
 
         pop hl
 
-        call setxy
-        ld a,143
-        add a,(hl)
-        rst 16
+        call SETDRAWPOS
+        ld a,(hl)
+
+        push de
+        call PRINTUDG
+        pop de
 
 
 terrain_row_fin:
@@ -165,7 +167,7 @@ troops_deploy:
 troops_deploy_loop:
         ld a,56
         add a,b
-        ld (23695),a                ; Set ink 1 or 2
+        ld (ATT),a                ; Set ink 1 or 2
         call troops_output
         inc c
         djnz troops_deploy_loop
@@ -204,14 +206,14 @@ troop_choice:
         ld (ix+troopdata_xpos),d
 
         push de
-        call setxy_troop
+        call SETTROOPDRAWPOS
 
         ld d,h
         ld e,l
         ld hl,troop_chars
         add hl,de
         ld a,(hl)
-        rst 16
+        call PRINTUDG
         pop de
 
         djnz troop_choice
